@@ -1,3 +1,1 @@
-.package
-.package-lock
-.node_modules
+/node_modules
