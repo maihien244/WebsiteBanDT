@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', (req, res, next) => {
-    res.json('login')
-})
+const loginController = require('../../app/controller/loginController')
+const validInputMiddleware = require('../../app/middleware/validInputMiddleware')
 
-router.post('/', (rew, res, next) => {
+router.get('/', loginController.showLoginPage)
 
-})
+router.post('/', validInputMiddleware.isEmailOrPhoneNumber, loginController.loginAccount)
 
 module.exports = router

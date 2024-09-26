@@ -1,0 +1,67 @@
+<div id="login-form"></div>
+    <section class="vh-100 bg-image">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px;">
+                <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Login</h2>
+
+                <form id="form-login" action="/login" method="POST">
+
+                    <div data-mdb-input-init class="form-group mb-4">
+                    <label class="form-label" for="email-input">Your Email Or Phone Number</label>
+                    <input type="text" id="text-input" name="text_input" required="required" class="form-control form-control-lg" />
+                    </div>
+
+                    <div data-mdb-input-init class="form-group mb-4">
+                    <label class="form-label" for="password-input">Password</label>
+                    <input type="password" id="password-input" name="password" required="required" class="form-control form-control-lg" />
+                    </div>
+                    <span class="form-message" style="color:red"></span>  
+                    <div class="form-check d-flex justify-content-center mb-5">
+                    <input class="form-check-input me-2" required="required" type="checkbox" value="" id="form2Example3cg" />
+                    <label class="form-check-label" for="form2Example3g">
+                        I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                    </label>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                    <button data-mdb-button-init
+                        data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" 
+                        id="submit-btn">Login</button>
+                    </div>
+
+                </form>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="css/form-input.css">
+    <script>
+      const submitBtn = document.querySelector('#submit-btn')
+      const textInput = document.querySelector('#text-input')
+      const passwordInput = document.querySelector('#password-input')
+      const formMess = document.querySelector('.form-message')
+      submitBtn.addEventListener('click', async (e) => {
+        e.preventDefault()
+        const data = {
+          text_input: textInput.value,
+          password: passwordInput.value,
+        }
+        await axios.post('http://localhost:3000/login', data)
+            .then(res => res.data)
+            .then((messageReponse) => {
+              console.log(messageReponse)
+              if(!!messageReponse) {
+                formMess.innerText = messageReponse.message
+              }
+            })
+      })
+    </script>
+    </section>
+</div>

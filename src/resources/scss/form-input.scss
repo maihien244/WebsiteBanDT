@@ -1,6 +1,15 @@
 #register-form{
     z-index: 10;
 }
+
+.form-group.invalid .form-control {
+    border-color: #f33a58;
+}
+
+.form-group.invalid .form-message {
+    color: #f33a58;
+}
+
 .gradient-custom-3 {
     /* fallback for old browsers */
     background: #84fab0;

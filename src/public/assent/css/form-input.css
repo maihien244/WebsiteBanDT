@@ -2,6 +2,14 @@
   z-index: 10;
 }
 
+.form-group.invalid .form-control {
+  border-color: #f33a58;
+}
+
+.form-group.invalid .form-message {
+  color: #f33a58;
+}
+
 .gradient-custom-3 {
   /* fallback for old browsers */
   background: #84fab0;
@@ -20,4 +28,4 @@
   background: linear-gradient(to right, rgb(132, 250, 176), rgb(143, 211, 244));
 }
 
-/*# sourceMappingURL=register.css.map */
+/*# sourceMappingURL=form-input.css.map */

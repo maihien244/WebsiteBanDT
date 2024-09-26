@@ -8,31 +8,36 @@
                 <div class="card-body p-5">
                 <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
-                <form>
+                <form id="form-register" action="/register" method="POST">
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" id="name-input" required="required" class="form-control form-control-lg" />
-                    <label class="form-label" for="name-input">Your Name</label>
+                    <div data-mdb-input-init class="form-group mb-4">
+                    <label class="form-label" for="fullname-input">Your Name</label>
+                    <input type="text" id="fullname-input" name="fullname" required="required" class="form-control form-control-lg" />
+                    <span class="form-message"></span>
                     </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" id="email-input" required="required" class="form-control form-control-lg" />
+                    <div data-mdb-input-init class="form-group mb-4">
                     <label class="form-label" for="email-input">Your Email</label>
+                    <input type="email" id="email-input" name="email" required="required" class="form-control form-control-lg" />
+                    <span class="form-message" id="email-message"></span>
                     </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" id="phoneNumber-input" required="required" class="form-control form-control-lg" />
+                    <div data-mdb-input-init class="form-group mb-4">
                     <label class="form-label" for="phoneNumber-input">Phone Number</label>
+                    <input type="text" id="phoneNumber-input" name="phoneNumber" required="required" class="form-control form-control-lg" />
+                    <span class="form-message" id="phoneNumber-message"></span>
                     </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="password-input" required="required" class="form-control form-control-lg" />
+                    <div data-mdb-input-init class="form-group mb-4">
                     <label class="form-label" for="password-input">Password</label>
+                    <input type="password" id="password-input" name="password" required="required" class="form-control form-control-lg" />
+                    <span class="form-message"></span>
                     </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="repeat-password" required="required" class="form-control form-control-lg" />
+                    <div data-mdb-input-init class="form-group mb-4">
                     <label class="form-label" for="repeat-password">Repeat your password</label>
+                    <input type="password" id="repeat-password" required="required" class="form-control form-control-lg" />
+                    <span class="form-message"></span>
                     </div>
 
                     <div class="form-check d-flex justify-content-center mb-5">
@@ -43,8 +48,9 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-                    <button  type="button" data-mdb-button-init
-                        data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                    <button  type="submit" data-mdb-button-init
+                        data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" 
+                        id="submit-btn">Register</button>
                     </div>
 
                     <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
@@ -58,12 +64,50 @@
         </div>
         </div>
     </div>
-    <style src="/css/register.css"></style>
-    </section>
+    <link rel="stylesheet" href="css/form-input.css">
+    <script src="js/validation.js"></script>
+    <script src="js/setCookie.js"></script>
     <script>
-        window.addEventListener('resize', () => {
-            const heightHeader = document.querySelector('.super_container').clientHeight
-            document.querySelector('#register-form').style.marginTop = `${heightHeader}px`
+
+      document.addEventListener('DOMContentLoaded', function () {
+        // Mong muốn của chúng ta
+        const message = Validator({
+          form: '#form-register',
+          formGroupSelector: '.form-group',
+          errorSelector: '.form-message',
+          rules: [
+            Validator.isRequired('#fullname-input', 'Please enter your full name'),
+            Validator.isEmail('#email-input'),
+            Validator.isPhoneNumber('#phoneNumber-input'),
+            Validator.minLength('#password-input', 8),
+            Validator.isRequired('#password-input'),
+            Validator.isConfirmed('#repeat-password', function () {
+              return document.querySelector('#form-register #password-input').value;
+            }, 'The password is incorrect')
+          ],
+          onSubmit: function (data) {
+            axios.post('http://localhost:3000/register', data)
+                .then(res => res.data)
+                .then(data => {
+                    if(data.type == 'error') {
+                      if(data.emailResponse) {
+                        document.querySelector('#email-message').innerText = 'Email exists'
+                      }
+                      if(data.phoneNumberResponse) {
+                        document.querySelector('#phoneNumber-message').innerText = 'Phone Number exists'
+                      }
+                    } else {
+                      window.location.href = "http://localhost:3000";
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+          }
         })
+        console.log(message)
+      })
+
     </script>
+    </section>
 </div>

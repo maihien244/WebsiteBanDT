@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', (req, res, next) => {
-    res.render('partials/component/public/register')
-})
+const registerController = require('../../app/controller/registerController')
+const existsAccountMiddle = require('../../app/middleware/existsAccountMiddleware')
 
-router.post('/', (rew, res, next) => {
+router.get('/', registerController.showRegisterPage)
 
-})
+router.post('/',existsAccountMiddle, registerController.createAccount)
 
 module.exports = router
