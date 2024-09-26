@@ -11,6 +11,6 @@ const checkTokenExpMiddleware = require('../../app/middleware/checkTokenExpMiddl
 router.use('/userLogin',checkTokenExpMiddleware, getUserRouter)
 router.use('/register', registerRouter)
 router.use('/login', loginRouter)
-router.get('/home', homeRouter)
+router.use('/home', homeRouter)
 
 module.exports = router
