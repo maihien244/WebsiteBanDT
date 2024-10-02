@@ -8,18 +8,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    {{> header}}
-    <div id="content-container">
+    {{> header configHeader=configHeader}}
+    <div id="content-container mb-3">
         <section class="pseudo-section"></section>
         {{{body}}}
-    <script>
-        function handleContentHidden() {
-            const heightHeader = document.querySelector('.super_container').clientHeight
-            document.querySelector('.pseudo-section').style.height = `${heightHeader}px`
-        }
-        window.addEventListener('DOMContentLoaded', handleContentHidden)
-        window.addEventListener('resize', handleContentHidden)
-    </script>
+        <script>
+            function handleContentHidden() {
+                const heightHeader = document.querySelector('.super_container').clientHeight
+                document.querySelector('.pseudo-section').style.height = `${heightHeader}px`
+            }
+            window.addEventListener('DOMContentLoaded', handleContentHidden)
+            window.addEventListener('resize', handleContentHidden)
+        </script>
+
     </div>
     {{> footer}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

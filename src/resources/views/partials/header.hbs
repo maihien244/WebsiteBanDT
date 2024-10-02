@@ -1,25 +1,44 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-<div class="super_container">
-	<link rel="stylesheet" href="/css/header.css">
+<div class="super_container border-bottom">
+	
 	<!-- Header -->
+	
 	<header class="header">
+		<link rel="stylesheet" type="text/css" href="/css/header.css">
 
 		<!-- Top Bar -->
 
 		<div class="top_bar">
 			<div class="container">
 				<div class="row">
-					<div class="col d-flex flex-row justify-content-evenly">
+					<div class="col d-flex flex-row justify-content-around align-items-center">
 						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918577/phone.png" alt=""></div>+91 9823 132 111</div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918597/mail.png" alt=""></div><a href="mailto:maivanhien244@gmail.com">maivanhien244@gmail.com</a></div>
-						<div class="top_bar_content ml-auto row">
-							<div class="top_bar_user d-flex flex-row align-items-center justify-content-between">
-								<div class="user_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg" alt=""></div>
-								<div class="user-link">
-									<a id="user-link" href=""></a>
-								</div>
-								<div id="link-register"><a href="/register">Register</a></div>
-								<div id="link-login"><a href="/login">Sign in</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918597/mail.png" alt=""></div><a href="mailto:maivanhien244@gmail.com">contact@bshop.com</a></div>
+						<div class="top_bar_content ml-auto">
+							<div class="top_bar_user">
+								{{#if configHeader.userLogin}}
+									<ul class="standard_dropdown main_nav_dropdown">
+										<li>
+											<a href="#">
+												<div class="user_icon">
+													<img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918647/user.svg" alt="">
+												</div>
+												{{configHeader.user.fullname}}
+												<i class="fas fa-chevron-down"></i>
+											</a>
+											<ul>
+												<li><a href="/private/infor">Personal Information</a></li>
+												{{#if (checkRoleAccount configHeader.user.role)}}
+													<li><a href="/private/admin/create">Create product</a></li>
+												{{/if}}
+												<li><a href="/logout">Log Out</a></li>
+											</ul>
+										</li>
+									</ul>
+								{{else}}
+									<div><a href="/register">Register</a></div>
+									<div><a href="/login">Sign in</a></div>
+								{{/if}}
 							</div>
 						</div>
 					</div>
@@ -47,23 +66,6 @@
 								<div class="header_search_form_container">
 									<form action="#" class="header_search_form clearfix">
 										<input type="search" required="required" class="header_search_input" placeholder="Search for products...">
-										<div class="custom_dropdown" style="display: none;">
-
-                                            {{!-- search suggestions --}}
-											<div class="custom_dropdown_list">
-												<span class="custom_dropdown_placeholder clc">All Categories</span>
-												<i class="fas fa-chevron-down"></i>
-												<ul class="custom_list clc">
-													<li><a class="clc" href="#">All Categories</a></li>
-													<li><a class="clc" href="#">Computers</a></li>
-													<li><a class="clc" href="#">Laptops</a></li>
-													<li><a class="clc" href="#">Cameras</a></li>
-													<li><a class="clc" href="#">Hardware</a></li>
-													<li><a class="clc" href="#">Smartphones</a></li>
-												</ul>
-											</div>
-
-										</div>
 										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918770/search.png" alt=""></button>
 									</form>
 								</div>
@@ -72,59 +74,38 @@
 					</div>
 
 					<!-- Wishlist -->
-					<div class="wishlist_cart-container col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
-						<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
-                            {{!-- haven't bought yet --}}
-							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
-								<div class="wishlist_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918681/heart.png" alt=""></div>
-								<div class="wishlist_content">
-									<div class="wishlist_text"><a href="#">Wishlist</a></div>
-									<div class="wishlist_count">10</div>
-								</div>
-							</div>
-
-							<!-- Cart -->
-                            {{!-- bought --}}
-							<div class="cart">
-								<div class="cart_container d-flex flex-row align-items-center justify-content-end">
-									<div class="cart_icon">
-										<img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918704/cart.png" alt="">
-										<div class="cart_count"><span>3</span></div>
+					{{#if configHeader.userLogin}}
+						<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
+							<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
+								<div class="wishlist d-flex flex-row align-items-center justify-content-end">
+									<div class="wishlist_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918681/heart.png" alt=""></div>
+									<div class="wishlist_content">
+										<div class="wishlist_text"><a href="#">Wishlist</a></div>
+										<div class="wishlist_count">10</div>
 									</div>
-									<div class="cart_content">
-										<div class="cart_text"><a href="#">Cart</a></div>
-										<div class="cart_price">$185</div>
+								</div>
+
+								<!-- Cart -->
+								<div class="cart">
+									<div class="cart_container d-flex flex-row align-items-center justify-content-end">
+										<div class="cart_icon">
+											<img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918704/cart.png" alt="">
+											<div class="cart_count"><span>3</span></div>
+										</div>
+										<div class="cart_content">
+											<div class="cart_text"><a href="#">Cart</a></div>
+											<div class="cart_price">$185</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					{{/if}}
 				</div>
 			</div>
 		</div>
-		
-		<!-- Main Navigation -->
+	</header>
+	<div class="border-bottom" style="height: 100px"></div>
+	</div>
 
-		<nav class="main_nav">
-			
-		</nav>
-
-		<script src="js/checkUserLogin.js"></script>
-		<script>
-			window.addEventListener('DOMContentLoaded',async () => {
-				const data = await getUserLogin();
-				console.log(data)
-				if(!!data.fullname) {
-					document.querySelector('#user-link').innerText = data.fullname
-					document.querySelector('#link-register').style.display = "none"
-					document.querySelector('#link-login').style.display = "none"
-				} else {
-					document.querySelector('#user-link').style.display = "none"
-					document.querySelector('.user_icon').style.display = "none"
-					document.querySelector('.wishlist_cart-container').style.display = "none"
-					document.querySelector('#link-register').style.display = "block"
-					document.querySelector('#link-login').style.display = "block"
-				}
-			})
-		</script>
 </div>

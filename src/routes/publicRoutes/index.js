@@ -4,13 +4,13 @@ const router = express.Router()
 const homeRouter = require('./homeRouter')
 const registerRouter = require('./registerRouter')
 const loginRouter = require('./loginRouter')
-const getUserRouter = require('./getUserRouter')
+const logoutRouter = require('./logoutRouter')
 
 const checkTokenExpMiddleware = require('../../app/middleware/checkTokenExpMiddleware')
 
-router.use('/userLogin',checkTokenExpMiddleware, getUserRouter)
 router.use('/register', registerRouter)
 router.use('/login', loginRouter)
-router.use('/home', homeRouter)
+router.use('/logout', logoutRouter)
+router.use('/', homeRouter)
 
 module.exports = router

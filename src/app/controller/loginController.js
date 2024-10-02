@@ -8,7 +8,9 @@ const { merge } = require('../../routes/publicRoutes/loginRouter')
 class LoginController {
     //[get] /login
     showLoginPage(req, res, next) {
-        res.render('partials/component/public/login')
+        res.render('partials/component/public/login', {
+            configHeader: res.locals.configHeader,
+        })
     }
 
     //[post] /login
@@ -22,8 +24,16 @@ class LoginController {
                 password,
             })
 
+            console.log({
+                [res.locals.typeInput]: text_input,
+                password,
+            })
+
+            console.log(account)
+
             if(!account) {
                 res.json({
+                    type: 'warn',
                     message: `The ${res.locals.typeInput == 'email' ? 'email' : 'phone number'} or password is incorrect`
                 })
             }
@@ -31,9 +41,13 @@ class LoginController {
             const token = await conferToken(account._id, undefined, undefined)
             await addTokenToDB(account._id, undefined, token.refreshToken)
             setCookie(res, token)
-            res.redirect('/')
+            res.json({
+                type: 'succes',
+                message: 'Login succesfully!'
+            })
         } catch(err) {
             res.json({
+                type: 'error',
                 message: 'Login failed',
                 err,
             })

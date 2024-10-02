@@ -57,8 +57,10 @@
             .then(res => res.data)
             .then((messageReponse) => {
               console.log(messageReponse)
-              if(!!messageReponse) {
+              if(messageReponse?.type != 'succes') {
                 formMess.innerText = messageReponse.message
+              } else {
+                window.location.href = "http://localhost:3000"
               }
             })
       })

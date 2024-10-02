@@ -23,9 +23,9 @@ body
 	color: #000000;
 	background-color: #FFFFFF;
 }
+
 div
 {
-	background-color: #FFFFFF;
 	display: block;
 	position: relative;
 	-webkit-box-sizing: border-box;
@@ -184,6 +184,7 @@ section
 }
 .super_container
 {
+	background-color: #FFFFFF;
 	width: 100%;
 	overflow: hidden;
 }
@@ -302,7 +303,9 @@ section
 {
 	display: inline-block;
 }
-
+.top_bar_dropdown{
+	z-index: 11;
+}
 .top_bar_dropdown li
 {
 	padding-left: 13px;
@@ -393,6 +396,7 @@ section
 	left: 100%;
 	top: 0 !important;
 }
+
 .top_bar_user
 {
 	display: inline-block;

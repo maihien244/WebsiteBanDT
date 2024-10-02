@@ -11,7 +11,9 @@ const { mutipleToObjectLitera, toObjectLitera} = require('../util/convertToObjec
 class RegisterController {
     //[get]
     showRegisterPage(req, res, next) {
-        res.render('partials/component/public/register')
+        res.render('partials/component/public/register', {
+            configHeader: res.locals.configHeader,
+        })
     }
 
     //[post]

@@ -20,7 +20,6 @@ body {
 }
 
 div {
-  background-color: #FFFFFF;
   display: block;
   position: relative;
   -webkit-box-sizing: border-box;
@@ -173,6 +172,7 @@ section {
 }
 
 .super_container {
+  background-color: #FFFFFF;
   width: 100%;
   overflow: hidden;
 }
@@ -285,6 +285,10 @@ section {
 
 .top_bar_menu {
   display: inline-block;
+}
+
+.top_bar_dropdown {
+  z-index: 11;
 }
 
 .top_bar_dropdown li {
