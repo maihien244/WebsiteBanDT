@@ -28,5 +28,8 @@
     "mongoose": "^8.6.3",
     "nodemon": "^3.1.7",
     "sass": "^1.79.3"
+  },
+  "dependencies": {
+    "method-override": "^3.0.0"
   }
 }

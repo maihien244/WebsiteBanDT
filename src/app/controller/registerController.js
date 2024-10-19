@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const Account = require('../model/Account')
+const User = require('../model/User')
 
 const conferToken = require('../util/token/conferToken')
 const addTokenToDB = require('../util/token/addTokenToDB')
@@ -12,6 +13,7 @@ class RegisterController {
     //[get]
     showRegisterPage(req, res, next) {
         res.render('partials/component/public/register', {
+            enableHeader: false,
             configHeader: res.locals.configHeader,
         })
     }
@@ -20,12 +22,15 @@ class RegisterController {
     async createAccount(req, res, next) {
         try {
             await Account.create({
-                fullname: req.body.fullname,
                 phoneNumber: req.body.phoneNumber,
                 email: req.body.email,
                 password: req.body.password,
             })
             const id = await findIdAccount(req.body.email, undefined)
+            await User.create({
+                fullname: req.body.fullname,
+                _id: id,
+            })
             const token = await conferToken(id, undefined, undefined)
             await addTokenToDB(id, undefined, token.refreshToken)
             setCookie(res, token)

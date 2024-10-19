@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const handlebar = require('express-handlebars')
 const cookieParser = require('cookie-parser')
+const methodOverride = require('method-override')
 
 require('dotenv').config({ path: __dirname + '/.env'})
 
@@ -31,6 +32,9 @@ app.set('views', path.join(__dirname, 'resources/views'))
 
 //cookie parser
 app.use(cookieParser())
+
+//method override
+app.use(methodOverride('_method'))
 
 //config body parser
 app.use(bodyParser.json())

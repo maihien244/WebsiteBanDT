@@ -9,6 +9,7 @@ class LoginController {
     //[get] /login
     showLoginPage(req, res, next) {
         res.render('partials/component/public/login', {
+            enableHeader: false,
             configHeader: res.locals.configHeader,
         })
     }

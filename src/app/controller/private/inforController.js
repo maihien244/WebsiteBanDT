@@ -13,17 +13,10 @@ class InforController {
             const account = toObjectLiteral(await Account.findOne({
                 _id: decoded.id
             }))
-            console.log('infor')
-            console.log(account)
             
             res.render('partials/component/private/inforUser', {
+                enableHeader: false,
                 configHeader: res.locals.configHeader,
-                userInfor: {
-                    fullname: account.fullname,
-                    email: account.email,
-                    phoneNumber: account.phoneNumber,
-                    avatar: account.avatar,
-                },
             })
 
         } catch(err) {
@@ -33,7 +26,7 @@ class InforController {
                 err,
             })
         }
-    } 
+    }
 }
 
 module.exports = new InforController

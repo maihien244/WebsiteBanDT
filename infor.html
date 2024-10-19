@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-sidebar">
+        <div class="row min-vh-100 flex-lg-nowrap">
+            <div class="bg-light col-auto col-md-2 col-lg-2 min-vh-100 d-flex flex-column justify-content-start">
+                <a href="#" class="p-4 d-flex text-decoration-none align-items-center justify-content-center border-bottom">
+                    <span class="fs-5 fw-semibold text-black">BSHOP</span>
+                </a>
+                <ul class="nav nav-pills flex-column ml-3 mt-2">
+                    <li class=" p-2 nav-items">
+                        <a href="/" class="nav-link text-black" aria-current="page">Home</a>
+                    </li>
+                    <li class="p-2 nav-items">
+                        <a href="#" class="nav-link text-black" aria-current="page">User Information</a>
+                    </li>
+                    <li class="p-2 nav-items dropdown">
+                        <a href="#" class="nav-link dropdown-toggle text-black dropdown" aria-current="page" id="product-dropdown">
+                            Products
+                        </a>
+                        <div class="nav sub-nav flex-column bg-white list-group" aria-labelledby="product-dropdown" id="sub-product">
+                            <ul>
+                                <li class="p-2 nav-items border-bottom">
+                                    <a href="#" class="nav-link sub-link text-black" aria-current="page">All Products</a>
+                                </li>   
+                                <li class="p-2 nav-items">
+                                    <a href="#" class="nav-link sub-link text-black" aria-current="page">Create Product</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="p-2 nav-items">
+                        <a href="#" class="nav-link text-black" aria-current="page">Access Setting</a>
+                    </li>      
+                    <li class="p-2 nav-items">
+                        <a href="#" class="nav-link text-black" aria-current="page">Log Out</a>
+                    </li>            
+                </ul>
+            </div>
+            <div class="col content-container p-5">
+                <div class="mt-4 card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-3">
+                                <div class="user-avatar">
+                                    <img src="data:image/jpeg;base64,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" alt="avatar">
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-between pl-3" style="margin-left: 1rem;">
+                                <div class="pt-2 pl-2 text-sm-left d-flex flex-column">
+                                    <h5 class="fullname mb-2">Mai Văn Hiền</h5>
+                                    <p class="email mb-2">maivanhien244@gmail.com</p>
+                                    <small class="time-active mb-2"> Last seen 2 hours ago</small>
+                                    <div class="btn btn-primary " id="btn-upload-file">
+                                        Change Photo
+                                        <input type="file" id="input-file" style="display: none;">
+                                    </div>
+                                    <span id="msg-error-input-file"></span>
+                                        <script>
+                                            const inputFile = document.getElementById('input-file')
+                                            document.getElementById('btn-upload-file').addEventListener('click', () => {
+                                                inputFile.click()
+                                            })
+                                            inputFile.addEventListener('change', () => {
+                                                // console.log(1)
+                                                const fileSelected = inputFile.files[0]
+                                                const fileReader = new FileReader()
+                                                var srcImg = undefined
+                                                fileReader.onload = (event) => {
+                                                    srcImg = event.target.result
+                                                    // console.log(srcImg)
+                                                    document.querySelector('.user-avatar img').src = srcImg
+                                                }
+                                                fileReader.onerror = () => {
+                                                    document.getElementById('msg-error-input-file').innerText = 'Upload Image Fail!'
+                                                    document.getElementById('msg-error-input-file').style.color = 'red'
+                                                }
+                                                fileReader.readAsDataURL(fileSelected)
+                                            })
+                                        </script>
+                                </div>
+                                <div class="d-flex flex-column pt-2 text-sm-right p-3">
+                                    <span class="badge badge-secondary bg-dark">Administrator</span>
+                                    <small class="text-muted">Join 09 Dec 2017</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="edit-profile">
+
+                        </div>
+                    </div>
+                </div>
+                <form id="edit-infor-form" action="/edit-information" method="post">
+                    <div class="mt-4 card">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="fullname">Full Name</label>
+                                    <input type="text" id="fullname" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="Mai Văn Hiền">
+                                </div>
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="username">User Name</label>
+                                    <input type="text" id="username" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="hien244"></imput>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="fullname">Email</label>
+                                    <input type="text" id="email" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="Maivanhien244@gmail.com">
+                                </div>
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="username">Phone Number</label>
+                                    <input type="text" id="phoneNumber" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="0862990700"></imput>
+                                </div>
+                            </div>
+                            <span class="row d-flex text-black tw-bolder" style="margin-left: 2rem;">Address</span>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="province-input">Province</label>
+                                    <select class="rounded-3 mt-2" id="province-input">
+                                        <option value="0">Select the province</option>
+                                    </select>
+                                </div>
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="dsitrict-input">District</label>
+                                    <select class="rounded-3 mt-2" id="district-input">
+                                        <option value="0">Select the district</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="commune-input">Commune</label>
+                                    <select class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" id="commune-input">
+                                        <option value="0">Select the commune</option>
+                                    </select>
+                                </div>
+                                <div class="col-4 d-flex flex-column">
+                                    <label for="specific-input">Specific address</label>
+                                    <input type="text" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" id="specific-address" placeholder="">
+                                </div>
+                            </div>
+                            <span class="row d-flex text-black tw-bolder" style="margin-left: 2rem;">Change Your Password</span>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="col-4 d-flex flex-column">
+                                    <div class="col" >
+                                        <label for="current-pw">Current Password</label>
+                                        <input type="password" class="rounded-3 mt-2" id="current-pw" style="width :100%">
+                                    </div>
+                                    <div class="col" >
+                                        <label for="new-pw">New Password</label>
+                                        <input type="password" class="rounded-3 mt-2" id="new-pw" style="width :100%">
+                                    </div>
+                                    <div class="col" >
+                                        <label for="current-pw">Repeat Password</label>
+                                        <input type="password" class="rounded-3 mt-2" id="repeat-pw" style="width :100%">
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="btn btn-primary" id="submit">Save Changes</div>
+                                </div>
+                            </div>
+                            <script>
+                                const submitBtn = document.querySelector('#submit')
+                                submitBtn.addEventListener('click', () => {
+                                    const fullname = document.querySelector('#fullname').value
+                                })
+                            </script>
+                            <script>
+                                const apiAddress = 'https://vapi.vnappmob.com/api/'
+                                const province = document.querySelector('#province-input')
+                                const district = document.querySelector('#district-input')
+                                const commune = document.querySelector('#commune-input')
+                                province.addEventListener('click', async () => {
+                                    if(province.options.length == 1) {
+                                        const data = (await axios.get(apiAddress+'province/')).data.results
+                                        console.log(data)
+                                        const result = data.map((dt) => {
+                                            return `<option value="${dt.province_id}">${dt.province_name}</option>`
+                                        })
+                                        province.insertAdjacentHTML('beforeend', result.join(""))
+                                    }
+                                })
+                                province.addEventListener('change', () => {
+                                    district.innerHTML = `<option value="0">Select the district</option>`
+                                })
+                                district.addEventListener('click', async () => {
+                                    if(province.options.length != 1 ) {
+                                        const data = (await axios.get(apiAddress+'province/district/'+province.value)).data.results
+                                        console.log(data)
+                                        const result = data.map((dt) => {
+                                            return `<option value="${dt.district_id}">${dt.district_name}</option>`
+                                        })
+                                        district.insertAdjacentHTML('beforeend', result.join(""))
+                                    }
+                                })
+                                district.addEventListener('change', () => {
+                                    commune.innerHTML = `<option value="0">Select the commune</option>`
+                                })
+                                commune.addEventListener('click', async () => {
+                                    if(district.options.length != 1) {
+                                        const data = (await axios.get(apiAddress+'province/ward/'+district.value)).data.results
+                                        console.log(data)
+                                        const result = data.map((dt) => {
+                                            return `<option value="${dt.ward_id}">${dt.ward_name}</option>`
+                                        })
+                                        commune.insertAdjacentHTML('beforeend', result.join(""))
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <script>
+                const submitBTn = document.getElementById('submit')
+                const form = document.getElementById('edit-infor-form')
+                submitBTn.addEventListener('click', () => {
+                    console.log(1)
+                    form.submit()
+                })
+            </script>
+            <script>
+                const navSubs = document.querySelectorAll('.dropdown')
+                navSubs.forEach((navSub) => {
+                    navSub.addEventListener('click', (e) => {
+                        e.stopPropagation()
+                        const targetItem = document.querySelector(`[aria-labelledby="${navSub.id}"]`)
+                        if(targetItem.classList.contains('show')) {
+                            targetItem.classList.remove('show')
+                            const subItems = document.querySelectorAll(`#${targetItem.id} li`)
+                            subItems.forEach((subItem)=> {
+                                if(subItem.classList.contains('clicked')) {
+                                    subItem.classList.remove('clicked')
+                                }
+                            })
+
+                        } else {
+                            targetItem.classList.add('show')
+                        }
+                    })
+                })
+
+                const navItems = document.querySelectorAll('.nav-link')
+                navItems.forEach((item) => {
+                    item.addEventListener('click',() => {
+                        const subItems = document.querySelectorAll('.sub-link')
+                        if(item.classList.contains('clicked')) {
+                            item.classList.remove('clicked')
+                        } else {
+                            subItems.forEach((subItem)=> {
+                                if(subItem.classList.contains('clicked') && subItem != item) {
+                                    subItem.classList.remove('clicked')
+                                }
+                            })
+                            item.classList.add('clicked')
+                        }
+                        e.stopPropagation()
+                    })
+                })
+            </script>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>
