@@ -14,7 +14,8 @@ const userLoginMiddleware = require('./app/middleware/userLoginMiddleware')
 const checkTokenExpMiddleware = require('./app/middleware/checkTokenExpMiddleware')
 
 const checkRoleAccount = require('./app/helper/checkRoleAccpunt')
-
+const pagination = require('./app/helper/pagination')
+const sortable = require('./app/helper/handlebars')
 const port = 3000
 const app = express()
 //connect to database
@@ -25,6 +26,8 @@ app.engine('.hbs', handlebar.engine({
     extname: '.hbs',
     helpers: {
         ...checkRoleAccount,
+        ...pagination,
+        ...sortable,
     }
 }))
 app.set('view engine', '.hbs')

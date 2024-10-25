@@ -1,0 +1,322 @@
+<div id="information-page">
+                <div class="mt-4 card" >
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-3">
+                                <div class="user-avatar" id="">
+                                    <img src="{{configHeader.user.avatar}}" alt="avatar">
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-between pl-3" style="margin-left: 1rem;">
+                                <div class="pt-2 pl-2 text-sm-left d-flex flex-column">
+                                    <h5 class="fullname mb-2">{{configHeader.user.fullname}}</h5>
+                                    <p class="email mb-2">{{configHeader.user.email}}</p>
+                                    <small class="time-active mb-2"> Last seen 2 hours ago</small>
+                                    <div class="btn btn-primary " id="btn-upload-file">
+                                        Change Photo
+                                        <input type="file" id="input-file" style="display: none;">
+                                    </div>
+                                    <span id="msg-error-input-file"></span>
+                                        <script>
+                                            const inputFile = document.getElementById('input-file')
+                                            document.getElementById('btn-upload-file').addEventListener('click', () => {
+                                                inputFile.click()
+                                            })
+                                            inputFile.addEventListener('change', () => {
+                                                // console.log(1)
+                                                const fileSelected = inputFile.files[0]
+                                                const fileReader = new FileReader()
+                                                var img = new Image()
+                                                fileReader.onload = async (event) => {
+                                                    img.src = event.target.result
+                                                    const canvas = document.createElement('canvas')
+                                                    const ctx = canvas.getContext('2d')
+                                                    canvas.width = 140
+                                                    canvas.height = Math.floor((140/img.width)*img.height)
+                                                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+                                                    const srcImg = canvas.toDataURL('image/jpeg', 0.7)
+                                                    console.log(srcImg)
+                                                    // console.log(srcImg)
+                                                    document.querySelector('.user-avatar img').src = srcImg
+                                                    await axios.patch('http://localhost:3000/private/change-avatar', {
+                                                        avatar: srcImg
+                                                    })
+
+
+                                                }
+                                                fileReader.onerror = () => {
+                                                    document.getElementById('msg-error-input-file').innerText = 'Upload Image Fail!'
+                                                    document.getElementById('msg-error-input-file').style.color = 'red'
+                                                }
+                                                fileReader.readAsDataURL(fileSelected)
+                                            })
+                                        </script>
+                                </div>
+                                <div class="d-flex flex-column pt-2 text-sm-right p-3">
+                                    <span class="badge badge-secondary bg-dark">{{configHeader.user.role}}</span>
+                                    <small class="text-muted">Join 09 Dec 2017</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="edit-profile">
+
+                        </div>
+                    </div>
+                </div>
+                <form id="edit-infor-form" action="edit-information?_method=PATCH" method="post">
+                    <div class="mt-4 card">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="fullname">Full Name</label>
+                                    <input type="text" id="fullname" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="{{configHeader.user.fullname}}">
+                                    <span class="form-message"></span>
+                                </div>
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="username">User Name</label>
+                                    <input type="text" id="username" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="{{configHeader.user.username}}"></imput>
+                                    <span class="form-message"></span>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="fullname">Email</label>
+                                    <input type="text" id="email" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="{{configHeader.user.email}}">
+                                    <span class="form-message"></span>
+                                </div>
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="username">Phone Number</label>
+                                    <input type="text" id="phoneNumber" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" placeholder="{{configHeader.user.phoneNumber}}"></imput>
+                                    <span class="form-message"></span>
+                                </div>
+                            </div>
+                            <span class="row d-flex text-black tw-bolder" style="margin-left: 2rem;">Address</span>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="province">Province</label>
+                                    <select class="rounded-3 mt-2" id="province">
+                                        <option id="0" value="">Select the province</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="dsitrict-input">District</label>
+                                    <select class="rounded-3 mt-2" id="district">
+                                        <option id="0" value="">Select the district</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="commune">Commune</label>
+                                    <select class="rounded-3 mt-2" id="commune">
+                                        <option id="0" value="">Select the commune</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-4 d-flex flex-column">
+                                    <label for="specific-input">Specific address</label>
+                                    <input type="text" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" id="specific-address" placeholder="{{configHeader.user.specific_address}}">
+                                    <span class="form-message"></span>
+                                </div>
+                            </div>
+                            <span class="row d-flex text-black tw-bolder" style="margin-left: 2rem;">Change Your Password</span>
+                            <div class="row d-flex justify-content-evenly mb-2">
+                                <div class="col-4 d-flex flex-column">
+                                    <div class="form-group col-8 d-flex flex-column" >
+                                        <label for="current-password">Current Password</label>
+                                        <input type="password" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" id="current_password" style="width :100%">
+                                        <span class="form-message"></span>
+                                    </div>
+                                    <div class="form-group col-8 d-flex flex-column" >
+                                        <label for="new-password">New Password</label>
+                                        <input type="password" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" id="new_password" style="width :100%">
+                                        <span class="form-message"></span>
+                                    </div>
+                                    <div class="form-group col-8 d-flex flex-column" >
+                                        <label for="current-password">Repeat Password</label>
+                                        <input type="password" class="rounded-3 mt-2" style="padding: 0.25rem 1rem;" id="repeat_password" style="width :100%">
+                                        <span class="form-message"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-4 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="btn btn-primary" id="submit">Save Changes</div>
+                                </div>
+                            </div>
+                            <script>
+                                function removeAscent (str) {
+                                    if (str === null || str === undefined) return str;
+                                    str = str.toLowerCase();
+                                    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+                                    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+                                    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+                                    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+                                    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+                                    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+                                    str = str.replace(/đ/g, "d");
+                                    return str;
+                                }
+                                function getParent(element, selector) {
+                                    while (element.parentElement) {
+                                        if (element.parentElement.matches(selector)) {
+                                            return element.parentElement;
+                                        }
+                                        element = element.parentElement;
+                                    }
+                                }
+                                const inputElements = document.querySelectorAll('#edit-infor-form input')
+                                window.isValidate = true
+                                const selectors = ['fullname', 'username', 'email', 'phoneNumber', 'province', 'district', 'commune', 'specific-address', 'current_password', 'new_password']
+                                const submitBtn = document.querySelector('#submit')
+                                const regexs = {
+                                    fullname: /^[A-Za-zÀ-ÿ\s]+$/,
+                                    username: /^[a-zA-Z0-9_]{3,16}$/,
+                                    email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                                    phoneNumber: /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
+                                    current_password: /^.{8,}$/,
+                                    new_password: /^.{8,}$/,
+                                    repeat_password: /^.{8,}$/,
+                                }
+                                inputElements.forEach((element) => {
+                                    element.onblur = () => {
+                                        console.log(element)
+                                        if(element.value != '') {
+                                            let message = regexs[element.id].test(removeAscent(element.value)) ? undefined : 'The field is invalid'
+                                            if(message) {
+                                                isValidate = false
+                                                getParent(element, '.form-group').querySelector('.form-message').innerText = message
+                                                getParent(element, '.form-group').querySelector('.form-message').classList.add('invalid')
+                                            } else {
+                                                isValidate = true
+                                                getParent(element, '.form-group').querySelector('.form-message').innerText = ''
+                                                getParent(element, '.form-group').querySelector('.form-message').classList.remove('invalid')
+                                            }
+                                            if(element.id == 'repeat_password') {
+                                                if(document.getElementById('new_password').value != document.getElementById('repeat_password').value) {
+                                                    isValidate = false
+                                                    getParent(element, '.form-group').querySelector('.form-message').innerText = "Passwords don't match. Please try again."
+                                                    getParent(element, '.form-group').querySelector('.form-message').classList.add('invalid')
+                                                } else {
+                                                    isValidate = true
+                                                    getParent(element, '.form-group').querySelector('.form-message').innerText = ''
+                                                    getParent(element, '.form-group').querySelector('.form-message').classList.remove('invalid')
+                                                }
+                                            }
+                                        } else if(element.id != 'current_password') {
+                                            isValidate = true
+                                            getParent(element, '.form-group').querySelector('.form-message').innerText = ''
+                                            getParent(element, '.form-group').querySelector('.form-message').classList.remove('invalid')
+                                        }
+                                    }
+                                })
+                                submitBtn.addEventListener('click', async () => {
+                                    const crrPass = document.getElementById('current_password')
+                                    if(document.getElementById('new_password').value != '') {
+                                        if(document.getElementById('repeat_password').value == '') {
+                                            isValidate = false
+                                            getParent(document.getElementById('repeat_password'), '.form-group').querySelector('.form-message').innerText = "Please fill the field"
+                                            getParent(document.getElementById('repeat_password'), '.form-group').querySelector('.form-message').classList.add('invalid')
+                                        }
+                                    }
+                                    if(!regexs['current_password'].test(crrPass.value)) {
+                                        getParent(crrPass, '.form-group').querySelector('.form-message').innerText = 'Please fill in this field'
+                                        getParent(crrPass, '.form-group').querySelector('.form-message').classList.add('invalid')
+                                    } else {
+                                        getParent(crrPass, '.form-group').querySelector('.form-message').innerText = ''
+                                        getParent(crrPass, '.form-group').querySelector('.form-message').classList.remove('invalid')
+                                        if(isValidate) {
+                                            let options = {}
+                                            let account = {}
+                                            const acc_field = ['email', 'phoneNumber', 'new_password', 'current_password']
+                                            let user = {}
+                                        
+                                            selectors.forEach((item) => {
+                                                const selector = document.getElementById(item)
+                                                if(selector.value != '' && selector.value != '0') {
+                                                    if(item == 'province' || item == 'district' || item == 'commune') {
+                                                        user[item] = (function() {
+                                                            const ops = document.querySelectorAll(`#${item} option`)
+                                                            let val = ""
+                                                            ops.forEach(op => {
+                                                                if(op.value == selector.value) {
+                                                                    val = op.innerText
+                                                                }
+                                                            })
+                                                            return val
+                                                        })();
+                                                    } else {
+                                                        if(acc_field.includes(item)) {
+                                                            if(item == 'new_password') {
+                                                                account.password = selector.value
+                                                            } else {
+                                                                account[item] = selector.value
+                                                            }
+                                                        } else {
+                                                            user[item] = selector.value
+                                                        }
+                                                    }
+                                                }
+                                            })
+                                            options.account = account
+                                            options.user = user
+                                            console.log(options)
+                                            await axios.patch('http://localhost:3000/private/edit-information', options)
+                                                .then(res => res.data)
+                                                .then(data => {
+                                                    {{!-- console.log(data) --}}
+                                                    if(data.type != 'succes') {
+                                                        getParent(crrPass, '.form-group').querySelector('.form-message').innerText = data.message
+                                                        getParent(crrPass, '.form-group').querySelector('.form-message').classList.add('invalid')
+                                                    } else {
+                                                        location.reload(true)
+                                                    }
+                                                })
+                                        }
+                                    }
+                                })
+                                    
+                            </script>
+                            <script>
+                                const apiAddress = 'https://vapi.vnappmob.com/api/'
+                                const province = document.querySelector('#province')
+                                const district = document.querySelector('#district')
+                                const commune = document.querySelector('#commune')
+                                province.addEventListener('click', async () => {
+                                    if(province.options.length == 1) {
+                                        const data = (await axios.get(apiAddress+'province/')).data.results
+                                        console.log(data)
+                                        const result = data.map((dt) => {
+                                            return `<option value="${dt.province_id}">${dt.province_name}</option>`
+                                        })
+                                        province.insertAdjacentHTML('beforeend', result.join(""))
+                                    }
+                                })
+                                province.addEventListener('change', () => {
+                                    district.innerHTML = `<option value="0">Select the district</option>`
+                                })
+                                district.addEventListener('click', async () => {
+                                    if(province.options.length != 1 ) {
+                                        const data = (await axios.get(apiAddress+'province/district/'+province.value)).data.results
+                                        console.log(data)
+                                        const result = data.map((dt) => {
+                                            return `<option value="${dt.district_id}">${dt.district_name}</option>`
+                                        })
+                                        district.insertAdjacentHTML('beforeend', result.join(""))
+                                    }
+                                })
+                                district.addEventListener('change', () => {
+                                    commune.innerHTML = `<option value="0">Select the commune</option>`
+                                })
+                                commune.addEventListener('click', async () => {
+                                    if(district.options.length != 1) {
+                                        const data = (await axios.get(apiAddress+'province/ward/'+district.value)).data.results
+                                        console.log(data)
+                                        const result = data.map((dt) => {
+                                            return `<option value="${dt.ward_id}">${dt.ward_name}</option>`
+                                        })
+                                        commune.insertAdjacentHTML('beforeend', result.join(""))
+                                    }
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </form>
+            </div>

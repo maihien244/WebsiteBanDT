@@ -13,8 +13,8 @@ class EditInforController {
 
         try {
             if(options.account.current_password != res.locals.password) {
-                res.status(300).json({
-                    type: 'waring',
+                res.json({
+                    type: 'warning',
                     message: 'The password is incorrect!'
                 })
             } else {
@@ -24,6 +24,9 @@ class EditInforController {
                 })
                 await User.findByIdAndUpdate(res.locals.id, {
                     ...options.user
+                })
+                res.json({
+                    type: 'succes'
                 })
             }
         } catch(err) {

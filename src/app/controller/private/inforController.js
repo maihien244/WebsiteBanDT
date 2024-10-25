@@ -7,7 +7,6 @@ const { toObjectLiteral } = require('../../util/convertToObjectLiteral')
 class InforController {
     //[get] private/infor
     async getInfor(req, res, next) {
-        console.log(3)
         try {
             const decoded = await jwt.verify(req.cookies.at, process.env.PUBLIC_KEY, { algorithms: 'HS256'})
             const account = toObjectLiteral(await Account.findOne({
@@ -16,6 +15,7 @@ class InforController {
             
             res.render('partials/component/private/inforUser', {
                 enableHeader: false,
+                layoutPage: 'infor',
                 configHeader: res.locals.configHeader,
             })
 

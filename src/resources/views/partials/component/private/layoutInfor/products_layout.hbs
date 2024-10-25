@@ -1,0 +1,190 @@
+<div class="container col" id="products">
+  <div id="header-container">
+    <h3 id="title" class="text-center">Product List</h3>
+  </div>
+  <div class="select-action mt-lg-5">
+    <select id="mass-action">
+      <option value="0">Batch Actions</option>
+      <option value="2">Delete</option>
+    </select>
+    <div class="btn btn-primary" style="margin-left: 4rem;" id="submit-action">Actions</div>
+  </div>
+  <table class="table mt-2">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col" >
+          <input type="checkbox" id="select-all">
+        </th>
+        <th scope="col">
+          Name
+          {{{sortable _sort 'name'}}}
+        </th>
+        <th scope="col">
+          Status
+          {{{sortable _sort 'status'}}}
+        </th>
+        <th scope="col">
+          Price
+          {{{sortable _sort 'price'}}}
+        </th>
+        <th scope="col">
+          Discount
+          {{{sortable _sort 'discount'}}}
+        </th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+            <tr>
+                <td scope="row">{{sum @index 1}}</td>
+                <td>
+                  <input type="checkbox" id="checked-input" data-id="{{this._id}}">
+                </td>
+                <td>{{this.name}}</td>
+                <td>{{this.status}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.discount}}</td>
+                <td>
+                    <a href="" 
+                      class="btn btn-link btn-primary text-decoration-none" 
+                      style="color: white;"
+                      data-bs-toggle="modal" 
+                      data-bs-id="{{this._id}}"
+                      data-bs-target="#form-edit">Edit</a>
+                    <a href="" 
+                      style="color: white;"
+                      class="btn btn-link btn-danger text-decoration-none" 
+                      data-bs-toggle="modal" 
+                      data-bs-id="{{this._id}}"
+                      data-bs-target="#confirm-modal">Delete</a>
+                </td>
+            </tr>
+      {{else}}
+        <td colspan="5" class="text-center">
+          Product list is empty!<a href="/courses/create">Create products</a> 
+        </td>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="pagination d-flex justify-content-center">
+    {{> component/layout/pagination currentPage=currentPage numberPages=numberPages}}
+  </div>
+</nav>
+{{!-- Confirm delete --}}
+
+<div class="modal" id="confirm-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Submit your action!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you want to delete the product?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+        <button id="confirm-delete" type="button" class="btn btn-danger" >Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- edit form  --}}
+<div class="modal" id="form-edit" tabindex="-1">
+  <link rel="stylesheet" href="/css/style.css">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/products/{{this._id}}/edit?_method=PATCH" method="post">
+          <div class="d-flex flex-column ">
+            <label for="name" class="">Name Product</label>
+            <input type="text" class="col" id="name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+        <button id="confirm-edit" type="button" class="btn btn-primary" >Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- FORM DELETE --}}
+
+
+<form id="form-confirm-delete" method="POST"></form>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function()  {
+    var modal = document.getElementById('confirm-modal')
+    var selectAll = document.getElementById('select-all')
+    var inputs = document.querySelectorAll('#checked-input')
+    var btnSubmit = document.getElementById('submit-action')
+    var actionForm = document.getElementById('mass-action')
+    var form = document.getElementById('form-confirm-delete')
+
+    modal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget
+      var id = button.getAttribute('data-bs-id')
+      var btnDeleteCofirm = document.getElementById('confirm-delete');
+      btnDeleteCofirm.onclick = function() {
+        form.action = '/products/' + id +'?_method=DELETE'
+        form.submit()
+      }
+    })
+
+    //handle button if list empty
+    if(inputs.length === 0) {
+      btnSubmit.setAttribute('disabled','')
+    } 
+
+    //handle select checkbox 
+    selectAll.onchange = () => {
+      if(selectAll.checked === true) {
+        inputs.forEach(input => input.checked = true)
+      } else {
+        inputs.forEach(input => input.checked = false)
+      }
+    }
+
+    const arrInput = [...inputs]
+    inputs.forEach((input) => {
+      input.onchange = () => {
+        const countChecked = arrInput.every(i => i.checked)
+        if(countChecked === false) {
+          selectAll.checked = false
+        }
+      }
+    })
+
+    //handle click button submit-action
+
+    function convertUri(value) {
+      return encodeURIComponent(JSON.stringify(value))
+    }
+
+    btnSubmit.addEventListener('click', () => {
+      const inputChecked = arrInput.filter(input => input.checked).map(input => input.dataset.id)
+      switch(actionForm.value) {
+        case '0':
+          break;
+        case '1':
+          break;
+        case '2':
+  	      form.action = '/courses/' + convertUri(inputChecked) +'/deleteList?_method=DELETE'
+          form.submit()
+          break;
+      }
+    })
+  })
+</script>
+
+</div>
