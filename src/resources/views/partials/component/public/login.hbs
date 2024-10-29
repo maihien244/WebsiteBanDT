@@ -53,7 +53,13 @@
           text_input: textInput.value,
           password: passwordInput.value,
         }
-        await axios.post('http://localhost:3000/login', data)
+        console.log(data)
+        const options = {
+          method: 'POST',
+          data,
+          url: 'http://localhost:3000/login/check',
+        }
+        await axios(options)
             .then(res => res.data)
             .then((messageReponse) => {
               console.log(messageReponse)

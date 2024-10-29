@@ -4,8 +4,8 @@ const router = express.Router()
 const loginController = require('../../app/controller/loginController')
 const validInputMiddleware = require('../../app/middleware/validInputMiddleware')
 
+router.post('/check', validInputMiddleware.isEmailOrPhoneNumber, loginController.loginAccount)
 router.get('/', loginController.showLoginPage)
 
-router.post('/', validInputMiddleware.isEmailOrPhoneNumber, loginController.loginAccount)
 
 module.exports = router

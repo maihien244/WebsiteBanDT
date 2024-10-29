@@ -16,6 +16,7 @@ class LoginController {
 
     //[post] /login
     async loginAccount(req, res, next) {
+        // console.log(1)
         try {
             const text_input = req.body.text_input
             const password = req.body.password
@@ -25,12 +26,12 @@ class LoginController {
                 password,
             })
 
-            console.log({
-                [res.locals.typeInput]: text_input,
-                password,
-            })
+            // console.log({
+            //     [res.locals.typeInput]: text_input,
+            //     password,
+            // })
 
-            console.log(account)
+            // console.log(account)
 
             if(!account) {
                 res.json({

@@ -5,6 +5,7 @@ const Account = require('../../model/Account')
 const secondsPerHour = 60*60
 
 module.exports = async (id, email, exp) => {
+    // console.log('token confer')
     try {
         if(id == undefined) {
             const account = await Account.findOne({ email })

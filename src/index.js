@@ -10,12 +10,13 @@ require('dotenv').config({ path: __dirname + '/.env'})
 const route = require('./routes')
 const database = require('./config/database')
 
-const userLoginMiddleware = require('./app/middleware/userLoginMiddleware')
-const checkTokenExpMiddleware = require('./app/middleware/checkTokenExpMiddleware')
-
 const checkRoleAccount = require('./app/helper/checkRoleAccpunt')
 const pagination = require('./app/helper/pagination')
 const sortable = require('./app/helper/handlebars')
+
+const checkTokenExpMiddleware = require('./app/middleware/checkTokenExpMiddleware')
+const userLoginMiddleware = require('./app/middleware/userLoginMiddleware')
+
 const port = 3000
 const app = express()
 //connect to database
@@ -43,14 +44,15 @@ app.use(methodOverride('_method'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(express.json())
+//user middleware
+app.use(checkTokenExpMiddleware)
+app.use(userLoginMiddleware)
+
 //static file
 app.use('/static', express.static(path.join(__dirname, '/public')))
 app.use('/css', express.static(path.join(__dirname, '/public/assent/css')))
 app.use('/js', express.static(path.join(__dirname, '/public/js')))
-
-//middleware
-app.use(checkTokenExpMiddleware)
-app.use(userLoginMiddleware)
 
 route(app)
 

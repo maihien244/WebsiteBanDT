@@ -21,6 +21,10 @@
           {{{sortable _sort 'name'}}}
         </th>
         <th scope="col">
+          Manufacturer
+          {{{sortable _sort 'manufacturer'}}}
+        </th>
+        <th scope="col">
           Status
           {{{sortable _sort 'status'}}}
         </th>
@@ -43,16 +47,16 @@
                   <input type="checkbox" id="checked-input" data-id="{{this._id}}">
                 </td>
                 <td>{{this.name}}</td>
+                <td>{{this.manufacturer}}</td>
                 <td>{{this.status}}</td>
                 <td>{{this.price}}</td>
                 <td>{{this.discount}}</td>
                 <td>
-                    <a href="" 
+                    <a href="" id="edit"
                       class="btn btn-link btn-primary text-decoration-none" 
                       style="color: white;"
                       data-bs-toggle="modal" 
-                      data-bs-id="{{this._id}}"
-                      data-bs-target="#form-edit">Edit</a>
+                      data-bs-id="{{this._id}}">Edit</a>
                     <a href="" 
                       style="color: white;"
                       class="btn btn-link btn-danger text-decoration-none" 
@@ -92,29 +96,94 @@
   </div>
 </div>
 {{!-- edit form  --}}
-<div class="modal" id="form-edit" tabindex="-1">
-  <link rel="stylesheet" href="/css/style.css">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="/products/{{this._id}}/edit?_method=PATCH" method="post">
-          <div class="d-flex flex-column ">
-            <label for="name" class="">Name Product</label>
-            <input type="text" class="col" id="name">
+<section id="form-edit" class="vh-100 bg-image" style="display: none;">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Edit the product</h2>
+
+              <form>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="name-product">Name Product</label>
+                  <input type="text" id="name-product" class="form-control form-control-lg" />
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="manufacturer-product">Manufacturer</label>
+                  <input type="text" id="manufacturer-product" class="form-control form-control-lg" />
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="status-product">Status Product</label>
+                  <select id="status-product" class="form-control form-control-lg">
+                    <option value="0">Select status product</option>
+                    <option value="1">Còn hàng</option>
+                    <option value="2">Hết hàng</option>
+                  </select>
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="price-product">Price</label>
+                  <input type="number" id="price-product" class="form-control form-control-lg" />
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="discount-product">Discount</label>
+                  <input type="number" id="discount-product" class="form-control form-control-lg" />
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="star-product">Star</label>
+                  <input type="number" id="star-product" class="form-control form-control-lg" />
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="img-product">Image</label>
+                  <input type="text" id="img-product" class="form-control form-control-lg" />
+                </div>
+
+                <div class="d-flex justify-content-around">
+                  <button  type="button" data-mdb-button-init id="exit-btn"
+                    data-mdb-ripple-init class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body">Exit</button>
+                  <button  type="button" data-mdb-button-init id="submit-btn"
+                    data-mdb-ripple-init class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Submit</button>
+                </div>
+
+              </form>
+
+            </div>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-        <button id="confirm-edit" type="button" class="btn btn-primary" >Submit</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  <script>
+    const exitBtn = document.getElementById('exit-btn')
+    const formEdit = document.getElementById('form-edit')
+    exitBtn.addEventListener('click', () => {
+      formEdit.style.display = 'none'
+    })
+  </script>
+  <script>
+    const btn = document.getElementById('edit')
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-bs-id')
+      const url = `http://localhost:3000/private/products/${id}`
+      await axios.get(url)
+          .then(res => res.data)
+          .then(data => {
+            const formEdit = document.getElementById('form-edit')
+            console.log(formEdit)
+            formEdit.style.display = 'block'
+            console.log(data.product)
+          })
+    })
+  </script>
+</section>
 
 {{!-- FORM DELETE --}}
 
@@ -136,7 +205,7 @@
       var id = button.getAttribute('data-bs-id')
       var btnDeleteCofirm = document.getElementById('confirm-delete');
       btnDeleteCofirm.onclick = function() {
-        form.action = '/products/' + id +'?_method=DELETE'
+        form.action = 'products/' + id +'/delete?_method=DELETE'
         form.submit()
       }
     })
@@ -179,7 +248,7 @@
         case '1':
           break;
         case '2':
-  	      form.action = '/courses/' + convertUri(inputChecked) +'/deleteList?_method=DELETE'
+  	      form.action = 'products/' + convertUri(inputChecked) +'/deleteList?_method=DELETE'
           form.submit()
           break;
       }

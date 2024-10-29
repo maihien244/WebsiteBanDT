@@ -4,6 +4,8 @@ class validInputMiddleware {
         const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         const regexPhoneNumber = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/
         const text_input = req.body.text_input
+        // console.log(req.body.text_input)
+        // console.log(req.body)
         if(regexEmail.test(text_input)) {
             res.locals.typeInput = 'email'
             next()
@@ -12,6 +14,7 @@ class validInputMiddleware {
             next()
         } else {
             res.json({
+                type: 'warn',
                 message: ' The your email or phone number is invalid',
             })
         }

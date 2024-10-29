@@ -10,6 +10,7 @@ module.exports = async (req, res, next) => {
     if(!!refreshToken) {
         try {
             const decode = await jwt.verify(accessToken, process.env.PUBLIC_KEY, { algorithm: 'HS256'})
+            res.locals.id = decode.id
             next()
         } catch(err) {
             try {
@@ -19,7 +20,7 @@ module.exports = async (req, res, next) => {
                 setCookie(res, token)  
                 next()
             } catch(err) {
-                res.redirect('/login')
+                next()
             }
         }
     } else {

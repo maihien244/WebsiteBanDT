@@ -38,23 +38,59 @@ class ProductController {
         })
     }
 
+    async getInforProduct(req, res, next) {
+        const productId = req.params.id
+        try {
+            const product = toObjectLiteral(await Product.findById(productId))
+            console.log(product)
+            res.status(200).json({
+                type: 'success',
+                product,
+            })
+        } catch(err) {
+            res.json({
+                type : 'err',
+                message: 'fail to connect database[getInforProduct]'
+            })
+        }
+    }
+
     // [delete] :id
     async deleteProduct(req, res, next) {
-        const productId = req.param.id
+        const productId = req.params.id
         console.log(productId)
-        Product.deleteById(productId, function(err, doc) {
+        await Product.deleteById(productId, function(err, doc) {
             if(err) {
                 res.status(500).json({
                     type: 'error',
-                    message: 'Fail delete product to database',
-                    error: err,
+                    message: 'Fail deleted products to datatbase'
                 })
-            } else {
-                res.redirect('/')
             }
         })
+        res.redirect('http://localhost:3000/private/products')
     }
 
+    async deleteListProducts(req, res, next) {
+        //convert uri to array
+        let list = req.params.list
+        list = list.slice(1, list.length-1)
+        list = list.split(',')
+        list = list.map((item) => {
+            return item.slice(1, item.length-1)
+        })
+
+        list.forEach(async (item) => {
+            await Product.deleteById(item, function(err, doc) {
+                if(err) {
+                    res.status(500).json({
+                        type: 'error',
+                        message: 'Fail deleted products to datatbase'
+                    })
+                }
+            })
+        })
+        res.redirect('http://localhost:3000/private/products')
+    }
 }
 
 module.exports = new ProductController

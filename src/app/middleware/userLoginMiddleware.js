@@ -14,7 +14,7 @@ const checkTokenExpMiddleware = require('./checkTokenExpMiddleware')
 module.exports = async function userLoginMiddleware(req, res, next) {
     const configHeader = copyObject(configH)
     try {
-        if(!!req.cookies.at || !!req.cookies.rt) {
+        if(!!req.cookies.at) {
             const decoded = await jwt.verify(req.cookies.at, process.env.PUBLIC_KEY, { algorithms: 'HS256'})
             configHeader.userLogin = true
             const account = await Account.findById(decoded.id)
@@ -38,6 +38,6 @@ module.exports = async function userLoginMiddleware(req, res, next) {
         next()
     } catch(err) {
         res.locals.configHeader = copyObject(configH)
-        res.redirect('/')
+        next()
     }
 }

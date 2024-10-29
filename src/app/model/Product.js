@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 
 const Product = Schema({
     name: { type: String, require: true},
+    manufacturer: { type: String, require: true},
     status: { type: String, require: true},
     price: { type: Number, require: true},
     discount: { type: Number, require: true},
