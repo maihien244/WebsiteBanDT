@@ -19,9 +19,9 @@ body {
     min-height: 100%;
 }
 
-// #login-form .card {
+/* // #login-form .card {
 //     margin-top: -100px;
-// }
+// } */
 
 .footer-container {
     z-index: 8;
@@ -79,4 +79,7 @@ select {
 .invalid {
     color: red;
     border-color: red;
+}
+.text-gray-300 {
+    color: gray;
 }

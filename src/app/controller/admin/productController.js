@@ -28,7 +28,7 @@ class ProductController {
         let numberPages = (await Product.find({})).length / PAGE_SIZE
         numberPages = (numberPages == parseInt(numberPages)) ? parseInt(numberPages) : (parseInt(numberPages) + 1)
         // console.log(numberPages)
-        res.render('partials/component/private/inforUser', {
+        res.render('partials/component/admin/adminPage', {
             products, 
             _sort: res.locals._sort,
             enableHeader: false,
@@ -38,11 +38,11 @@ class ProductController {
         })
     }
 
+    //[get] /:id
     async getInforProduct(req, res, next) {
         const productId = req.params.id
         try {
             const product = toObjectLiteral(await Product.findById(productId))
-            console.log(product)
             res.status(200).json({
                 type: 'success',
                 product,
@@ -51,6 +51,27 @@ class ProductController {
             res.json({
                 type : 'err',
                 message: 'fail to connect database[getInforProduct]'
+            })
+        }
+    }
+
+    //[patch] /:id/edit
+    async editProduct(req, res, next) {
+        let {id, option} = req.params
+        const object = {}
+        option = decodeURIComponent(option).split('&')
+        option.forEach((item) => {
+            const tmp = item.split("=")
+            object[tmp[0]] = tmp[1]
+        })
+        try {
+            await Product.findByIdAndUpdate(id, object)
+            res.redirect('/admin/products')
+        } catch(err) {
+            res.status(500).json({
+                type: 'error',
+                message: 'Error update the product',
+                Error: err,
             })
         }
     }

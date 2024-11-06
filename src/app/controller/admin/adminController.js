@@ -4,17 +4,17 @@ const Account = require('../../model/Account')
 
 const { toObjectLiteral } = require('../../util/convertToObjectLiteral')
 
-class InforController {
+class AdminController {
     //[get] private/infor
-    async getInfor(req, res, next) {
+    async getAdminPage(req, res, next) {
         try {
             const account = toObjectLiteral(await Account.findOne({
                 _id: res.locals.id
             }))
             
-            res.render('partials/component/private/inforUser', {
+            res.render('partials/component/admin/adminPage', {
                 enableHeader: false,
-                layoutPage: 'infor',
+                layoutPage: 'dashboard',
                 configHeader: res.locals.configHeader,
             })
 
@@ -28,4 +28,4 @@ class InforController {
     }
 }
 
-module.exports = new InforController
+module.exports = new AdminController

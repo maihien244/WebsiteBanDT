@@ -43,10 +43,17 @@ class LoginController {
             const token = await conferToken(account._id, undefined, undefined)
             await addTokenToDB(account._id, undefined, token.refreshToken)
             setCookie(res, token)
-            res.json({
-                type: 'succes',
-                message: 'Login succesfully!'
-            })
+            if(account.role == 'admin') {
+                res.json({
+                    type : 'succes',
+                    uri: '/admin'
+                })
+            } else {
+                res.json({
+                    type : 'succes',
+                    uri: '/'
+                })
+            }
         } catch(err) {
             res.json({
                 type: 'error',

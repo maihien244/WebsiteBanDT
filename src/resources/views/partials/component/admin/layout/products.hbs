@@ -1,0 +1,332 @@
+<div class="container col" id="products">
+  <div id="header-container">
+    <h3 id="title" class="text-center">Product List</h3>
+  </div>
+  <div class="select-action mt-lg-5">
+    <select id="mass-action">
+      <option value="0">Batch Actions</option>
+      <option value="2">Delete</option>
+    </select>
+    <div class="btn btn-primary" style="margin-left: 4rem;" id="submit-action">Actions</div>
+  </div>
+  <table class="table mt-2">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col" >
+          <input type="checkbox" id="select-all">
+        </th>
+        <th scope="col">
+          Name
+          {{{sortable _sort 'name'}}}
+        </th>
+        <th scope="col">
+          Manufacturer
+          {{{sortable _sort 'manufacturer'}}}
+        </th>
+        <th scope="col">
+          Status
+          {{{sortable _sort 'status'}}}
+        </th>
+        <th scope="col">
+          Price
+          {{{sortable _sort 'price'}}}
+        </th>
+        <th scope="col">
+          Discount
+          {{{sortable _sort 'discount'}}}
+        </th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+            <tr>
+                <td scope="row">{{sum @index 1}}</td>
+                <td>
+                  <input type="checkbox" id="checked-input" data-id="{{this._id}}">
+                </td>
+                <td>{{this.name}}</td>
+                <td>{{this.manufacturer}}</td>
+                <td>{{this.status}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.discount}}</td>
+                <td>
+                    <a href="" id="edit"
+                      class="btn btn-link btn-primary text-decoration-none" 
+                      style="color: white;"
+                      data-bs-toggle="modal" 
+                      data-bs-id="{{this._id}}">Edit</a>
+                    <a href="" 
+                      style="color: white;"
+                      class="btn btn-link btn-danger text-decoration-none" 
+                      data-bs-toggle="modal" 
+                      data-bs-id="{{this._id}}"
+                      data-bs-target="#confirm-modal">Delete</a>
+                </td>
+            </tr>
+      {{else}}
+        <td colspan="5" class="text-center">
+          Product list is empty!<a href="/courses/create">Create products</a> 
+        </td>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="pagination d-flex justify-content-center">
+    {{> component/layout/pagination currentPage=currentPage numberPages=numberPages}}
+  </div>
+</nav>
+{{!-- Confirm delete --}}
+
+<div class="modal" id="confirm-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Submit your action!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you want to delete the product?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+        <button id="confirm-delete" type="button" class="btn btn-danger" >Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- edit form  --}}
+<section id="form-edit" style="display: none;" data-id-pd="">
+  <div class="mask d-flex align-items-center gradient-custom-3">
+    <div class="container">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Edit the product</h2>
+
+              <form action="?" method="post">
+                <div class="row">
+                  <div class="col-auto me-3">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="name-product">Name Product</label>
+                      <input type="text" id="name-product" class="form-control form-control-lg" placeholder=""/>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="manufacturer-product">Manufacturer</label>
+                      <input type="text" id="manufacturer-product" class="form-control form-control-lg" placeholder=""/>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="status-product">Status Product</label>
+                      <select id="status-product" class="form-control form-control-lg">
+                        <option value="">Select status product</option>
+                        <option value="Còn hàng">Còn hàng</option>
+                        <option value="Hết hàng">Hết hàng</option>
+                      </select>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="price-product">Price</label>
+                      <input type="text" id="price-product" class="form-control form-control-lg" placeholder=""/>
+                    </div>
+                  </div>
+                  <div class="col-auto d-flex flex-column justify-content-center">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="discount-product">Discount</label>
+                      <input type="text" id="discount-product" class="form-control form-control-lg" placeholder="" pattern="^(100|[1-9]?[0-9])$"/>
+                      <span id="message-err"></span>
+                      <script src="/js/checkInput.js">
+                        
+                      </script>
+                      <script>
+                        Validate({
+                          inputSelector: '#discount-product',
+                          message_error: '#message-err', 
+                        })
+                      </script>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="star-product">Star</label>
+                      <input type="text" id="star-product" class="form-control form-control-lg" placeholder="" pattern="[0-5]"/>
+                      <span id="message-err"></span>
+                      <script src="/js/checkInput.js">
+                        
+                      </script>
+                      <script>
+                        Validate({
+                          inputSelector: '#star-product',
+                          message_error: '#message-err', 
+                        })
+                      </script>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="img-product">Image</label>
+                      <input type="text" id="img-product" class="form-control form-control-lg" />
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="d-flex justify-content-around">
+                  <button  type="button" data-mdb-button-init id="exit-btn"
+                    data-mdb-ripple-init class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" style="color: white !important">Exit</button>
+                  <button  type="button" data-mdb-button-init id="submit-btn"
+                    data-mdb-ripple-init class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Submit</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const exitBtn = document.getElementById('exit-btn')
+    const formEdit = document.getElementById('form-edit')
+    exitBtn.addEventListener('click', () => {
+      formEdit.style.display = 'none'
+    })
+
+  </script>
+  <script>
+    const btns = document.querySelectorAll('#edit')
+    const submitEditBtn = formEdit.querySelector('#submit-btn')
+    btns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-bs-id')
+      const url = `http://localhost:3000/admin/products/${id}`
+      await axios.get(url)
+          .then(res => res.data)
+          .then(dt => {
+            formEdit.style.display = 'block'
+            const product = dt.product
+            formEdit.setAttribute('data-id-pd', product._id)
+            const elements = ['name', 'manufacturer', 'status', 'price', 'discount', 'star', 'img']
+            elements.forEach((element) => {
+              formEdit.querySelector(`#${element}-product`).setAttribute('placeholder', product[element] || '')
+            })
+          })
+    })
+    })
+    const mask = document.querySelector('.mask')
+    mask.onclick = () => {
+      const formEdit = document.getElementById('form-edit')
+      formEdit.style.display = 'none'
+    }
+
+    //
+    document.querySelector('.mask .card').onclick = (e) => {
+      e.stopPropagation()
+    }
+
+    //
+
+    submitEditBtn.addEventListener('click', async() => {
+      const form = document.getElementById('form-edit-product')
+      const elements = ['name', 'manufacturer', 'status', 'price', 'discount', 'star', 'img']
+      const elementsConvertNumber = ['price', 'discount', 'star']
+      const option = {}
+      elements.forEach((element) => {
+        const input = formEdit.querySelector(`#${element}-product`)
+        if(input.getAttribute('placeholder') != input.value && input.value != '' && !input.value.includes('<script>')) {
+          if(elementsConvertNumber.includes(element)) {
+            option[element] = parseInt(input.value)
+          } else {
+            option[element] = input.value
+          }
+        }
+      })
+      if(Object.keys(option).length != 0) {
+        let uri = ""
+        for(let key in option) {
+          if(uri != "") {
+            uri += "&"
+          }
+          uri += key +"="+ encodeURIComponent(option[key])
+        }
+        form.action = `http://localhost:3000/admin/products/${formEdit.getAttribute('data-id-pd')}/edit/${uri}?_method=PATCH`
+        form.submit()
+      }
+    })
+  </script>
+</section>
+
+{{!-- FORM DELETE --}}
+
+
+<form id="form-confirm-delete" method="POST"></form>
+<form id="form-edit-product" method="POST"></form>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function()  {
+    var modal = document.getElementById('confirm-modal')
+    var selectAll = document.getElementById('select-all')
+    var inputs = document.querySelectorAll('#checked-input')
+    var btnSubmit = document.getElementById('submit-action')
+    var actionForm = document.getElementById('mass-action')
+    var form = document.getElementById('form-confirm-delete')
+
+    modal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget
+      var id = button.getAttribute('data-bs-id')
+      var btnDeleteCofirm = document.getElementById('confirm-delete');
+      btnDeleteCofirm.onclick = function() {
+        form.action = 'products/' + id +'/delete?_method=DELETE'
+        form.submit()
+      }
+    })
+
+    //handle button if list empty
+    if(inputs.length === 0) {
+      btnSubmit.setAttribute('disabled','')
+    } 
+
+    //handle select checkbox 
+    selectAll.onchange = () => {
+      if(selectAll.checked === true) {
+        inputs.forEach(input => input.checked = true)
+      } else {
+        inputs.forEach(input => input.checked = false)
+      }
+    }
+
+    const arrInput = [...inputs]
+    inputs.forEach((input) => {
+      input.onchange = () => {
+        const countChecked = arrInput.every(i => i.checked)
+        if(countChecked === false) {
+          selectAll.checked = false
+        }
+      }
+    })
+
+    //handle click button submit-action
+
+    function convertUri(value) {
+      return encodeURIComponent(JSON.stringify(value))
+    }
+
+    btnSubmit.addEventListener('click', () => {
+      const inputChecked = arrInput.filter(input => input.checked).map(input => input.dataset.id)
+      switch(actionForm.value) {
+        case '0':
+          break;
+        case '1':
+          break;
+        case '2':
+  	      form.action = 'products/' + convertUri(inputChecked) +'/deleteList?_method=DELETE'
+          form.submit()
+          break;
+      }
+    })
+  })
+</script>
+
+</div>
