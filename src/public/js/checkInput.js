@@ -14,7 +14,7 @@ function Validate(option) {
             isMatch = !reg.test(inputSeletor.value) && regex.test(value)
         }
         if(!isMatch) {
-            message_error.innerText = 'This field is invalid'
+            message_error.innerText = option?.message || 'This field is invalid'
             inputSeletor.classList.add('invalid')
             message_error.classList.add('invalid')
         } else {

@@ -7,7 +7,7 @@
             </a>
             <ul class="nav nav-pills flex-column ml-3 mt-2">
                 <li class=" p-2 nav-items">
-                    <a href="dashboard" class="nav-link text-black" aria-current="page">Dashboard</a>
+                    <a href="/admin" class="nav-link text-black" aria-current="page">Dashboard</a>
                 </li>
                 <li class="p-2 nav-items dropdown">
                     <a href="#" class="nav-link dropdown-toggle text-black dropdown" aria-current="page" id="product-dropdown">
@@ -16,19 +16,19 @@
                     <div class="nav sub-nav flex-column bg-white list-group" aria-labelledby="product-dropdown" id="sub-product">
                         <ul>
                             <li class="link__get p-2 nav-items border-bottom" data-idElement="products">
-                                <a href="admin/products" class="nav-link sub-link text-black" aria-current="page">All Products</a>
+                                <a href="http://localhost:3000/admin/products" class="nav-link sub-link text-black" aria-current="page">All Products</a>
                             </li>   
                             <li class="link__get p-2 nav-items border-bottom" data-idElement="edit-products">
-                                <a href="#" class="nav-link sub-link text-black" aria-current="page">Create Product</a>
+                                <a href="http://localhost:3000/admin/products/create" class="nav-link sub-link text-black" aria-current="page">Create Product</a>
                             </li>
                             <li class="link__get p-2 nav-items border-bottom" data-idElement="trash-can">
-                                <a href="#" class="nav-link sub-link text-black" aria-current="page">Trash Can</a>
+                                <a href="http://localhost:3000/admin/trash" class="nav-link sub-link text-black" aria-current="page">Trash Can</a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="link__get p-2 nav-items">
-                    <a href="#" class="nav-link text-black" aria-current="page">Access Setting</a>
+                    <a href="http://localhost:3000/admin/access-setting" class="nav-link text-black" aria-current="page">Access Setting</a>
                 </li>      
                 <li class="p-2 nav-items">
                     <a href="/logout" class="nav-link text-black" aria-current="page">Log Out</a>
@@ -41,6 +41,15 @@
             {{/if}}
             {{#if (equal layoutPage 'products')}}
                 {{> component/admin/layout/products configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'trash')}}
+                {{> component/admin/layout/trash configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'createProduct')}}
+                {{> component/admin/layout/createProduct configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'access-setting')}}
+                {{> component/admin/layout/access_setting configHeader=configHeader}}
             {{/if}}
         </div>
         <script>

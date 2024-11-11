@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken')
 const path = require('path')
+const { json } = require('body-parser')
 
 const Product = require('../../model/Product')
 
 const { toObjectLiteral, toMultiObjectLiteral } = require('../../util/convertToObjectLiteral')
+const convertUriToList = require('../../util/convertUriToList')
+const convertUriToObject = require('../../util/convertUriToObject')
 
 class ProductController {
     //[get] private/products
@@ -88,29 +91,48 @@ class ProductController {
                 })
             }
         })
-        res.redirect('http://localhost:3000/private/products')
+        res.redirect('http://localhost:3000/admin/products')
     }
-
+    // [delete] :list
     async deleteListProducts(req, res, next) {
         //convert uri to array
         let list = req.params.list
-        list = list.slice(1, list.length-1)
-        list = list.split(',')
-        list = list.map((item) => {
-            return item.slice(1, item.length-1)
-        })
-
+        list = convertUriToList(list)
         list.forEach(async (item) => {
             await Product.deleteById(item, function(err, doc) {
                 if(err) {
                     res.status(500).json({
                         type: 'error',
-                        message: 'Fail deleted products to datatbase'
+                        message: 'Fail deleted products to datatbase',
+                        error: err,
                     })
                 }
             })
         })
-        res.redirect('http://localhost:3000/private/products')
+        res.redirect('http://localhost:3000/admin/products')
+    }
+
+    //[get] /create
+    async getCreateProductPage(req, res, next) {
+        res.render('partials/component/admin/adminPage', {
+            enableHeader: false,
+            layoutPage: 'createProduct',
+        })
+    }
+
+    //[post] /create
+    async createProduct(req, res, next) {
+        try {
+            const option = req.query
+            await Product.create(option)
+            res.redirect('http://localhost:3000/admin/products/create')
+        } catch(err) {
+            res.status(500),json({
+                type: 'error',
+                message: 'Fail add the product to datatbase',
+                error: err,
+            })
+        }
     }
 }
 

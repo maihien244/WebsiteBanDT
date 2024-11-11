@@ -22,6 +22,7 @@ class RegisterController {
     async createAccount(req, res, next) {
         try {
             await Account.create({
+                fullname: req.body.fullname,
                 phoneNumber: req.body.phoneNumber,
                 email: req.body.email,
                 password: req.body.password,

@@ -9,7 +9,7 @@ const Product = Schema({
     status: { type: String, require: true},
     price: { type: Number, require: true},
     discount: { type: Number, require: true},
-    star: { type: Number, require: true},
+    star: { type: Number, require: true, default: 5},
     img: { type: String, require: true},
     dateRegister: { type: Date, default: Date.now },
 })

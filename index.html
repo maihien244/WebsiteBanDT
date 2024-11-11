@@ -10,7 +10,7 @@
 </head>
 <body>
     
-<div class="container-sidebar" style="background-color: #fafafa !important;">
+<div class="container-sidebar">
     <div class="row min-vh-100 flex-lg-nowrap">
         <div class="bg-light col-auto col-md-2 col-lg-2 min-vh-100 d-flex flex-column justify-content-start">
             <a href="/" class="p-4 d-flex text-decoration-none align-items-center justify-content-center border-bottom">
@@ -18,10 +18,7 @@
             </a>
             <ul class="nav nav-pills flex-column ml-3 mt-2">
                 <li class=" p-2 nav-items">
-                    <a href="dashboard" class="nav-link text-black" aria-current="page">Dashboard</a>
-                </li>
-                <li class="p-2 nav-items link__get" id="user_infor" data-idElement="information-page">
-                    <a href="infor" class="nav-link text-black" aria-current="page">User Information</a>
+                    <a href="/admin" class="nav-link text-black" aria-current="page">Dashboard</a>
                 </li>
                 <li class="p-2 nav-items dropdown">
                     <a href="#" class="nav-link dropdown-toggle text-black dropdown" aria-current="page" id="product-dropdown">
@@ -30,13 +27,13 @@
                     <div class="nav sub-nav flex-column bg-white list-group" aria-labelledby="product-dropdown" id="sub-product">
                         <ul>
                             <li class="link__get p-2 nav-items border-bottom" data-idElement="products">
-                                <a href="products" class="nav-link sub-link text-black" aria-current="page">All Products</a>
+                                <a href="http://localhost:3000/admin/products" class="nav-link sub-link text-black" aria-current="page">All Products</a>
                             </li>   
                             <li class="link__get p-2 nav-items border-bottom" data-idElement="edit-products">
-                                <a href="#" class="nav-link sub-link text-black" aria-current="page">Create Product</a>
+                                <a href="http://localhost:3000/admin/products/create" class="nav-link sub-link text-black" aria-current="page">Create Product</a>
                             </li>
                             <li class="link__get p-2 nav-items border-bottom" data-idElement="trash-can">
-                                <a href="#" class="nav-link sub-link text-black" aria-current="page">Trash Can</a>
+                                <a href="http://localhost:3000/admin/trash" class="nav-link sub-link text-black" aria-current="page">Trash Can</a>
                             </li>
                         </ul>
                     </div>
@@ -49,7 +46,7 @@
                 </li>            
             </ul>
         </div>
-        <div class="col content-container" style="background-color: #f2f5fc !important;">
+        <div class="col content-container p-5 d-flex justify-content-center">
             
         </div>
         <script>
@@ -91,12 +88,12 @@
                     const targetItem = document.querySelector(`[aria-labelledby="${navSub.id}"]`)
                     if(targetItem.classList.contains('show')) {
                         targetItem.classList.remove('show')
-                        // {{!-- const subItems = document.querySelectorAll(`#${targetItem.id} li`)
-                        // subItems.forEach((subItem)=> {
-                        //     if(subItem.classList.contains('clicked')) {
-                        //         subItem.classList.remove('clicked')
-                        //     }
-                        // }) --}}
+                        {{!-- const subItems = document.querySelectorAll(`#${targetItem.id} li`)
+                        subItems.forEach((subItem)=> {
+                            if(subItem.classList.contains('clicked')) {
+                                subItem.classList.remove('clicked')
+                            }
+                        }) --}}
 
                     } else {
                         targetItem.classList.add('show')
@@ -123,6 +120,7 @@
         </script>
     </div>
 </div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

@@ -1,10 +1,11 @@
 <div class="container col" id="products">
   <div id="header-container">
-    <h3 id="title" class="text-center">Product List</h3>
+    <h3 id="title" class="text-center">Trash List</h3>
   </div>
   <div class="select-action mt-lg-5">
     <select id="mass-action">
       <option value="0">Batch Actions</option>
+      <option value="1">Restore</option>
       <option value="2">Delete</option>
     </select>
     <div class="btn btn-primary" style="margin-left: 4rem;" id="submit-action">Actions</div>
@@ -52,11 +53,11 @@
                 <td>{{this.price}}</td>
                 <td>{{this.discount}}</td>
                 <td>
-                    <a href="" id="edit"
+                    <a href="" id="restore-btn"
                       class="btn btn-link btn-primary text-decoration-none" 
                       style="color: white;"
                       data-bs-toggle="modal" 
-                      data-bs-id="{{this._id}}">Edit</a>
+                      data-bs-id="{{this._id}}">Restore</a>
                     <a href="" 
                       style="color: white;"
                       class="btn btn-link btn-danger text-decoration-none" 
@@ -95,101 +96,24 @@
     </div>
   </div>
 </div>
-{{!-- edit form  --}}
-<section id="form-edit" class="vh-100 bg-image" style="display: none;">
-  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-          <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Edit the product</h2>
-
-              <form>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="name-product">Name Product</label>
-                  <input type="text" id="name-product" class="form-control form-control-lg" />
-                </div>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="manufacturer-product">Manufacturer</label>
-                  <input type="text" id="manufacturer-product" class="form-control form-control-lg" />
-                </div>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="status-product">Status Product</label>
-                  <select id="status-product" class="form-control form-control-lg">
-                    <option value="0">Select status product</option>
-                    <option value="1">Còn hàng</option>
-                    <option value="2">Hết hàng</option>
-                  </select>
-                </div>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="price-product">Price</label>
-                  <input type="number" id="price-product" class="form-control form-control-lg" />
-                </div>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="discount-product">Discount</label>
-                  <input type="number" id="discount-product" class="form-control form-control-lg" />
-                </div>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="star-product">Star</label>
-                  <input type="number" id="star-product" class="form-control form-control-lg" />
-                </div>
-
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="img-product">Image</label>
-                  <input type="text" id="img-product" class="form-control form-control-lg" />
-                </div>
-
-                <div class="d-flex justify-content-around">
-                  <button  type="button" data-mdb-button-init id="exit-btn"
-                    data-mdb-ripple-init class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body">Exit</button>
-                  <button  type="button" data-mdb-button-init id="submit-btn"
-                    data-mdb-ripple-init class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Submit</button>
-                </div>
-
-              </form>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    const exitBtn = document.getElementById('exit-btn')
-    const formEdit = document.getElementById('form-edit')
-    exitBtn.addEventListener('click', () => {
-      formEdit.style.display = 'none'
-    })
-  </script>
-  <script>
-    const btn = document.getElementById('edit')
-    btn.addEventListener('click', async () => {
-      const id = btn.getAttribute('data-bs-id')
-      const url = `http://localhost:3000/private/products/${id}`
-      await axios.get(url)
-          .then(res => res.data)
-          .then(data => {
-            const formEdit = document.getElementById('form-edit')
-            console.log(formEdit)
-            formEdit.style.display = 'block'
-            console.log(data.product)
-          })
-    })
-  </script>
-</section>
 
 {{!-- FORM DELETE --}}
 
 
 <form id="form-confirm-delete" method="POST"></form>
+<form id="form-restore-product" method="POST"></form>
 
+<script>
+  const restoreBtns = document.querySelectorAll('#restore-btn')
+  const formRestore = document.getElementById('form-confirm-delete')
+  restoreBtns.forEach(async (btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-bs-id')
+      formRestore.action = 'trash/' + id +'/restore?_method=PATCH'
+      formRestore.submit()
+    })
+  })
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function()  {
@@ -205,7 +129,7 @@
       var id = button.getAttribute('data-bs-id')
       var btnDeleteCofirm = document.getElementById('confirm-delete');
       btnDeleteCofirm.onclick = function() {
-        form.action = 'products/' + id +'/delete?_method=DELETE'
+        form.action = 'trash/' + id +'/force?_method=DELETE'
         form.submit()
       }
     })
@@ -246,9 +170,11 @@
         case '0':
           break;
         case '1':
+          form.action = 'trash/' + convertUri(inputChecked) +'/restoreList?_method=PATCH'
+          form.submit()
           break;
         case '2':
-  	      form.action = 'products/' + convertUri(inputChecked) +'/deleteList?_method=DELETE'
+  	      form.action = 'trash/' + convertUri(inputChecked) +'/forceList?_method=DELETE'
           form.submit()
           break;
       }

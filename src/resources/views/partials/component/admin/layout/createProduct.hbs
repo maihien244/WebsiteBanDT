@@ -1,0 +1,99 @@
+<div id="create-product-form" class="d-flex justify-content-center">
+    <div class="d-flex flex-column shadow" style="width: 50%; border-radius: 6px;">
+        <div class="h3 text-black tw-bold text-center mt-4">Create Product</div>
+        <div class="mx-md-5 mx-lg-5 mt-4 d-flex flex-column">
+            <label class="pb-2 tw-bold" for="name-product">Name Product</label>
+            <input type="text" id="name-product" class="px-4 py-2" required>
+            <span id="message_err"></span>
+        </div>
+        <div class="mx-md-5 mx-lg-5 mt-4 d-flex flex-column">
+            <label class="pb-2 tw-bold" for="manufacturer-product">Manufacturer Product</label>
+            <input type="text" id="manufacturer-product" class="px-4 py-2" required>
+            <span id="message_err"></span>
+        </div>
+        <div class="mx-md-5 mx-lg-5 mt-4 d-flex flex-column">
+            <label class="pb-2 tw-bold" for="status-product">Status Product</label>
+            <select class="px-4 py-2" id="status-product">
+                <option value="Còn hàng">Còn hàng</option>
+                <option value="Hết hàng">Hết hàng</option>
+            </select>
+        </div>
+        <div class="mx-md-5 mx-lg-5 mt-4 d-flex flex-column">
+            <label class="pb-2 tw-bold" for="price-product">Price Product</label>
+            <input type="text" id="price-product" class="px-4 py-2" required>
+            <span id="message_err"></span>
+        </div>
+        <div class="mx-md-5 mx-lg-5 mt-4 d-flex flex-column">
+            <label class="pb-2 tw-bold" for="discount-product">Discount Product</label>
+            <input type="text" id="discount-product" class="px-4 py-2" required>
+            <span id="message_err"></span>
+            <script src="/js/checkInput.js">
+                
+            </script>
+            <script>
+                Validate({
+                inputSelector: '#discount-product',
+                message_error: '#message_err', 
+                })
+            </script>
+        </div>
+        <div class="mx-md-5 mx-lg-5 mt-4 d-flex flex-column">
+            <label class="pb-2 tw-bold" for="img-product">Image Of Product</label>
+            <input type="text" id="img-product" class="px-4 py-2" required>
+            <span id="message_err"></span>
+        </div>
+        <div class="mx-md-5 mx-lg-5 mt-4 mb-5 d-flex flex-column justify-content-center align-items-center">
+            <div class="btn btn-primary" id="submit-create-form" style="width: 40%;">Submit</div>
+        </div>
+    </div>
+    <form id="form-create-product" method="post"></form>
+    <script>
+        const submitBtn = document.getElementById('submit-create-form')
+        const element = ['name', 'manufacturer', 'status', 'price', 'discount', 'img']
+        const form = document.getElementById('form-create-product')
+
+        element.forEach((item) => {
+            const selector = document.getElementById(`${item}-product`)
+            selector.onblur = () => {
+                if(selector.value == '') {
+                document.getElementById(`${item}-product`).parentElement.querySelector('#message_err').innerText = 'Please fill the field'
+                document.getElementById(`${item}-product`).parentElement.querySelector('#message_err').classList.add('invalid')
+            } else {
+                document.getElementById(`${item}-product`).parentElement.querySelector('#message_err').innerText = ''
+                document.getElementById(`${item}-product`).parentElement.querySelector('#message_err').classList.remove('invalid')
+            }
+            }
+        })
+
+        submitBtn.addEventListener('click', () => {
+            let canSubmit = true
+            const option = {}
+            element.forEach((item) => {
+                let value = document.getElementById(`${item}-product`).value
+                if(value == '' && value.includes('<script>')) {
+                    canSubmit = false
+                    document.getElementById(`${item}-product`).parentElement.querySelector('#message_err').innerText = 'Please fill the field'
+                    document.getElementById(`${item}-product`).parentElement.querySelector('#message_err').classList.add('invalid')
+                } else {
+                    if(item == 'price' || item == 'discount') {
+                        option[item] = parseInt(value)
+                    } else {
+                        option[item] = value
+                    }
+                }
+            })
+            if(canSubmit) {
+                let uri = ''
+                for(let key in option) {
+                    if(uri != '') {
+                        uri += '&'
+                    }
+                    uri += encodeURIComponent(key) +"="+ encodeURIComponent(option[key])
+                }
+                {{!-- console.log(uri) --}}
+                form.action = 'http://localhost:3000/admin/products/create?'+ uri
+                form.submit()
+            }
+        })
+    </script>
+</div>
