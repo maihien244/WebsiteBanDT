@@ -20,6 +20,7 @@ class HomeController {
             enableHeader: true,
             currentPage: page_number,
             numberPages,
+            configHeader: res.locals.configHeader,
         })
     }
 }

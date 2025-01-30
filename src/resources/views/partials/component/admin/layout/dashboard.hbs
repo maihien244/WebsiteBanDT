@@ -9,7 +9,7 @@
                     <div class="row align-items-center">
                         <div class="col mr-2">
                             <div class="text-sx fw-bold mb-1" style="font-size: 0.75rem ;color: #4d72dc;">EARNINGS (MONTHLY)</div>
-                            <h5 id="total-earning__monthly">$40.000</h5>
+                            <h5 id="total-earning__monthly">${{configHeader.earning_month}}</h5>
                         </div>
                         <div class="col-auto fw-bold me-3">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -24,7 +24,7 @@
                     <div class="row align-items-center">
                         <div class="col mr-2">
                             <div class="text-sx fw-bold mb-1" style="font-size: 0.75rem ;color: #1cc88a;">EARNINGS (ANNUAL)</div>
-                            <h5 id="total-earning__annual">$40.000</h5>
+                            <h5 id="total-earning__annual">${{configHeader.earning_year}}</h5>
                         </div>
                         <div class="col-auto fw-bold me-3">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -39,7 +39,7 @@
                     <div class="row align-items-center">
                         <div class="col mr-2">
                             <div class="text-sx fw-bold mb-1" style="font-size: 0.75rem ;color: #f6c23e;">PENDING SEND</div>
-                            <h5 id="total-products__pending">15</h5>
+                            <h5 id="total-products__pending">{{configHeader.pending_count}}</h5>
                         </div>
                         <div class="col-auto fw-bold me-3">
                             <i class="fa fa-hourglass-half fa-2x text-gray-300" aria-hidden="true"></i>
@@ -54,7 +54,7 @@
                     <div class="row align-items-center">
                         <div class="col mr-2">
                             <div class="text-sx fw-bold mb-1" style="font-size: 0.75rem ; color: #36b9cc;">COMPLETED</div>
-                            <h5 id="total-products__completed">25</h5>
+                            <h5 id="total-products__completed">{{configHeader.completed_count}}</h5>
                         </div>
                         <div class="col-auto fw-bold me-3">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>

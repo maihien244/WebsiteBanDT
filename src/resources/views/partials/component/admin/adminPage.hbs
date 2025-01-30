@@ -28,6 +28,9 @@
                     </div>
                 </li>
                 <li class="link__get p-2 nav-items">
+                    <a href="http://localhost:3000/admin/pending" class="nav-link text-black" aria-current="page">Pending</a>
+                </li>  
+                <li class="link__get p-2 nav-items">
                     <a href="http://localhost:3000/admin/access-setting" class="nav-link text-black" aria-current="page">Access Setting</a>
                 </li>      
                 <li class="p-2 nav-items">
@@ -50,6 +53,9 @@
             {{/if}}
             {{#if (equal layoutPage 'access-setting')}}
                 {{> component/admin/layout/access_setting configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'pending')}}
+                {{> component/admin/layout/pending configHeader=configHeader}}
             {{/if}}
         </div>
         <script>

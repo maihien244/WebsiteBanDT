@@ -21,6 +21,7 @@ module.exports = {
       return new Handlebars.SafeString(output)
     },
     equal: (value1, value2) => {
-      return value1 == value2
+      // console.log(value2)
+      return String(value1) == String(value2)
     }
 }

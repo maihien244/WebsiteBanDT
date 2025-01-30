@@ -1,6 +1,6 @@
 <div class="container col" id="products">
   <div id="header-container">
-    <h3 id="title" class="text-center">Product List</h3>
+    <h3 id="title" class="text-center">Wish List</h3>
   </div>
   <div class="select-action mt-lg-5">
     <select id="mass-action">
@@ -40,7 +40,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each products}}
+      {{#each wishlist}}
             <tr>
                 <td scope="row">{{sum @index 1}}</td>
                 <td>
@@ -50,13 +50,13 @@
                 <td>{{this.manufacturer}}</td>
                 <td>{{this.status}}</td>
                 <td>{{this.price}}</td>
-                <td>{{this.discount}}</td>
+                <td>{{this.discount}}%</td>
                 <td>
-                    <a href="" id="edit"
+                    <a href="" id="buy"
                       class="btn btn-link btn-primary text-decoration-none" 
                       style="color: white;"
                       data-bs-toggle="modal" 
-                      data-bs-id="{{this._id}}">Edit</a>
+                      data-bs-id="{{this._id}}">Buy</a>
                     <a href="" 
                       style="color: white;"
                       class="btn btn-link btn-danger text-decoration-none" 
@@ -67,7 +67,7 @@
             </tr>
       {{else}}
         <td colspan="5" class="text-center">
-          Product list is empty!<a href="/courses/create">Create products</a> 
+          Wish list is empty!
         </td>
       {{/each}}
     </tbody>
@@ -97,95 +97,88 @@
 </div>
 {{!-- edit form  --}}
 <section id="form-edit" style="display: none;" data-id-pd="">
-  <div class="mask d-flex align-items-center gradient-custom-3">
-    <div class="container">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-          <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Edit the product</h2>
+    <div class="mask d-flex align-items-center gradient-custom-3">
+        <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px;">
+                <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Buy Form</h2>
 
-              <form action="?" method="post">
-                <div class="row">
-                  <div class="col-auto me-3">
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="name-product">Name Product</label>
-                      <input type="text" id="name-product" class="form-control form-control-lg" placeholder=""/>
+                <form id="form-buy" action="?" method="post">
+                    <div class="row">
+                        <div data-mdb-input-init="" class="form-group form-outline mb-4">
+                            <label class="form-label" for="fullname">Full Name</label>
+                            <input type="text" id="fullname" name="fullname" class="form-control form-control-lg" placeholder="">
+                            <span class="form-message"></span>
+                        </div>
+                        <div data-mdb-input-init="" class="form-group form-outline mb-4">
+                            <label class="form-label" for="address">Address</label>
+                            <input type="text" id="address" name="address" class="form-control form-control-lg" placeholder="">
+                            <span class="form-message"></span>
+                        </div>
+                        <div data-mdb-input-init="" class="form-group form-outline mb-4">
+                            <label class="form-label" for="phoneNumber">Phone Number</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control form-control-lg" placeholder="">
+                            <span class="form-message"></span>
+                        </div>
+                        <div data-mdb-input-init="" class="form-outline mb-4">
+                            <label class="form-label" for="quanlity">Quanlity</label>
+                            <input type="Number" id="quanlity" name="quanlity" class="form-control form-control-lg" placeholder="" value="1">
+                        </div>
                     </div>
+                    <div class="d-flex justify-content-around">
+                    <button  type="button" data-mdb-button-init id="exit-btn"
+                        data-mdb-ripple-init class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" style="color: white !important">Exit</button>
+                    <input type="submit" class="form-submit btn btn-primary btn-block btn-lg gradient-custom-4 text-body" value="Submit">
+                    </div>
+                </form>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="manufacturer-product">Manufacturer</label>
-                      <input type="text" id="manufacturer-product" class="form-control form-control-lg" placeholder=""/>
-                    </div>
-
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="status-product">Status Product</label>
-                      <select id="status-product" class="form-control form-control-lg">
-                        <option value="">Select status product</option>
-                        <option value="Còn hàng">Còn hàng</option>
-                        <option value="Hết hàng">Hết hàng</option>
-                      </select>
-                    </div>
-
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="price-product">Price</label>
-                      <input type="text" id="price-product" class="form-control form-control-lg" placeholder=""/>
-                    </div>
-                  </div>
-                  <div class="col-auto d-flex flex-column justify-content-center">
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="discount-product">Discount</label>
-                      <input type="text" id="discount-product" class="form-control form-control-lg" placeholder="" pattern="^(100|[1-9]?[0-9])$"/>
-                      <span id="message-err"></span>
-                      <script src="/js/checkInput.js">
-                        
-                      </script>
-                      <script>
-                        Validate({
-                          inputSelector: '#discount-product',
-                          message_error: '#message-err', 
+                <script src="/js/validation.js"></script>
+                <script>
+                    {{!-- const submitBtn = document.getElementById('submit-btn')
+                    submitBtn.addEventListener('click', (data) => {
+                        console.log(1)
+                        console.log(data)
+                    }) --}}
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Validator({
+                            form: '#form-buy',
+                            formGroupSelector: '.form-group',
+                            errorSelector: '.form-message',
+                            rules: [
+                                Validator.isRequired('#fullname', 'Please fill the field'),
+                                Validator.isRequired('#address', 'Please fill the field'),
+                                Validator.isPhoneNumber('#phoneNumber', 'The field is invalid'),
+                            ],
+                            onSubmit: async function (data) {
+                                data.id = formEdit.getAttribute('data-id-pd')
+                                await axios.patch('http://localhost:3000/private/cart', data)
+                                    .then(res => res.data)
+                                    .then((response) => {
+                                        {{!-- console.log(response) --}}
+                                        if(response === undefined) {
+                                            window.location.href = 'http://localhost:3000/login'
+                                        } else {
+                                            if(response.type == 'alert') {
+                                                alert(`${response.message}`)
+                                            }
+                                            if(response.type == 'success') {
+                                                alert(`${response.message}`)
+                                                formEdit.style.display = 'none'
+                                            }
+                                        }
+                                    })
+                            }
                         })
-                      </script>
-                    </div>
-
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="star-product">Star</label>
-                      <input type="text" id="star-product" class="form-control form-control-lg" placeholder="" pattern="[0-5]"/>
-                      <span id="message-err"></span>
-                      <script src="/js/checkInput.js">
-                        
-                      </script>
-                      <script>
-                        Validate({
-                          inputSelector: '#star-product',
-                          message_error: '#message-err', 
-                        })
-                      </script>
-                    </div>
-
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="img-product">Image</label>
-                      <input type="text" id="img-product" class="form-control form-control-lg" />
-                    </div>
-                  </div>
+                    })
+                </script>
                 </div>
-
-
-                <div class="d-flex justify-content-around">
-                  <button  type="button" data-mdb-button-init id="exit-btn"
-                    data-mdb-ripple-init class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" style="color: white !important">Exit</button>
-                  <button  type="button" data-mdb-button-init id="submit-btn"
-                    data-mdb-ripple-init class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Submit</button>
-                </div>
-
-              </form>
-
             </div>
-          </div>
+            </div>
         </div>
-      </div>
+        </div>
     </div>
-  </div>
   <script>
     const exitBtn = document.getElementById('exit-btn')
     const formEdit = document.getElementById('form-edit')
@@ -205,7 +198,7 @@
 
   </script>
   <script>
-    const btns = document.querySelectorAll('#edit')
+    const btns = document.querySelectorAll('#buy')
     const submitEditBtn = formEdit.querySelector('#submit-btn')
     btns.forEach((btn) => {
       btn.addEventListener('click', async () => {
@@ -277,7 +270,7 @@
       var id = button.getAttribute('data-bs-id')
       var btnDeleteCofirm = document.getElementById('confirm-delete');
       btnDeleteCofirm.onclick = function() {
-        form.action = 'products/' + id +'/delete?_method=DELETE'
+        form.action = 'http://localhost:3000/private/wishlist/' + id +'/delete?_method=PATCH'
         form.submit()
       }
     })
@@ -320,7 +313,7 @@
         case '1':
           break;
         case '2':
-  	      form.action = 'products/' + convertUri(inputChecked) +'/deleteList?_method=DELETE'
+  	      form.action = 'http://localhost:3000/private/wishlist/' + convertUri(inputChecked) +'/deleteList?_method=PATCH'
           form.submit()
           break;
       }

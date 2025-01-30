@@ -1,0 +1,443 @@
+<div class="container col" id="products">
+  <div id="header-container">
+    <h3 id="title" class="text-center">Pending Order</h3>
+  </div>
+  <div class="select-action mt-lg-5">
+    <select id="mass-action">
+      <option value="0">Batch Actions</option>
+      <option value="1">Confirm</option>
+      <option value="2">Success</option>
+      <option value="3">Delete</option>
+    </select>
+    <div class="btn btn-primary" style="margin-left: 4rem;" id="submit-action">Actions</div>
+  </div>
+  <table class="table table-bordered mt-2">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 10%;">Index</th> <!-- Kích thước bằng nhau cho Index -->
+            <th style="width: 10%;">Select</th> <!-- Kích thước bằng nhau cho Select -->
+            <th style="width: 60%;">ID User</th> <!-- Gấp 3 lần cột khác -->
+            <th style="width: 10%;"></th> <!-- Kích thước bằng nhau cho Actions -->
+        </tr>
+    </thead>
+    <tbody>
+        {{#each pending}}
+          <tr>
+            <td>{{sum @index 1}}</td>
+            <td><input type="checkbox" class="form-check-input" id="check-all" data-id1="{{this._id}}"></td>
+            <td>{{this._id}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm btn-view"data-fetch="0" data-id="{{this._id}}" data-action="hidden">View</button>
+            </td>
+          </tr>
+          <tr id="table-{{this._id}}" class="neo disabled">
+            <td colspan="4">
+                <table class="table table-bordered sub-table">
+                    <thead class="">
+                        <tr>
+                            <th>Index</th>
+                            <th>Select</th>
+                            <th>FullName</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Product</th>
+                            <th>Quanlity</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-table-{{this._id}}">
+                        
+                    </tbody>
+                </table>
+          </tr>
+        {{else}}
+          <td colspan="9" class="text-center">
+            Order is empty! 
+          </td>
+        {{/each}}
+        <script>
+          const btnView = document.querySelectorAll('.btn-view')
+          let scrLoaded = false
+          const subTable = document.querySelectorAll('.sub-table')
+          const inputCheckAll = document.querySelector('#check-all')
+
+          btnView.forEach((btn) => {
+            const i = btn.getAttribute('data-id')
+            const subTable = document.getElementById(`table-${i}`)
+            
+            btn.addEventListener('click', async () => {
+              {{!-- console.log(1) --}}
+              const a = btn.getAttribute('data-action')
+              const fe = btn.getAttribute('data-fetch')
+              if(a == 'hidden') {
+                if(fe == '0') {
+                  const dtc = (await axios.get(`http://localhost:3000/admin/pending/${i}`)).data
+                  if(dtc.type == 'success') {
+                    const bodyTable = document.getElementById(`body-table-${i}`)
+                    let index = 1
+                    dtc.data.forEach((item) => {
+                      const tr = document.createElement('tr')
+                      tr.setAttribute('data-id1', i)
+                      tr.setAttribute('data-id2', item.idCart)
+                      tr.innerHTML = `
+                        <td>${index++}</td>
+                        <td><input type="checkbox" class="form-check-input" id="check-one"></td>
+                        <td>${item.fullname}</td>
+                        <td>${item.address}</td>
+                        <td>${item.phoneNumber}</td>
+                        <td>${item.name}</td>
+                        <td>${item.quanlity}</td>
+                        <td>${item.price}$</td>
+                        <td class="d-flex justify-content-around">
+                            ${item.confirm ? '<button style="width=30%" class="btn btn-primary btn-sm btn-confirm" disabled>Confirm</button>' : '<button style="width=30%" class="btn btn-primary btn-sm btn-confirm">Confirm</button>'}
+                            <button style="width=30%" class="btn btn-success btn-sm btn-success">Succces</button>
+                            <button 
+                                  style="width=30%"
+                                  class="btn btn-danger btn-sm btn-delete"
+                                  data-bs-toggle="modal" 
+                                  data-bs-id="${item.idCart}"
+                                  data-bs-target="#confirm-modal">Delete</button>
+                        </td>
+                      `
+                      bodyTable.appendChild(tr)
+                    })
+
+                    btn.setAttribute('data-fetch', '1')
+                    subTable.classList.remove('disabled')
+                    btn.setAttribute('data-action', 'show')
+                    btn.innerText = 'Hidden'
+
+                    var btnConfirm = document.querySelectorAll('.btn-confirm')
+                    var btnSuccess = document.querySelectorAll('.btn-success')
+                    console.log(btnConfirm)
+                    console.log(btnSuccess)
+
+                    btnConfirm.forEach((btn) => {
+                      btn.addEventListener('click', async (e) => {
+                        const tr = e.target.parentElement.parentElement
+                        const id1 = tr.getAttribute('data-id1')
+                        const id2 = tr.getAttribute('data-id2')
+                        const dtc = (await axios.patch(`http://localhost:3000/admin/pending/${id1}/${id2}/confirm`)).data
+                        if(dtc.type = 'Success') {
+                          alert('Success')
+                          btn.setAttribute('disabled', true)
+                        } else {
+                          alert(`${dtc.message}`)
+                          window.href.reload()
+                        }
+                      })
+                    })
+
+                    btnSuccess.forEach((btn) => {
+                      btn.addEventListener('click', async(e) => {
+                        window.crrTr = tr = e.target.parentElement.parentElement
+                        const id1 = tr.getAttribute('data-id1')
+                        const id2 = tr.getAttribute('data-id2')
+                        const dtc = (await axios.patch(`http://localhost:3000/admin/pending/${id1}/${id2}/success`)).data
+                        if(dtc.type == 'success') {
+                          alert('Success')
+                          tr.parentElement.removeChild(tr)
+                        } else {
+                          alert(`${dtc.message}`)
+                          if(dtc.message != 'You have not confirmed the order') {
+                            window.href.reload()
+                          }
+                        }
+                      })
+                    })
+                  } else if(dtc.type == 'warning') {
+                    alert(dtc.message)
+                  } else {
+                    confirm('Server error! Do you want to reload page?')
+                    window.href.reload()
+                  }
+                } else {
+                  subTable.classList.remove('disabled')
+                  btn.setAttribute('data-action', 'show')
+                  btn.innerText = 'Hidden'
+                }
+              }
+              if(a == 'show') {
+                subTable.classList.add('disabled')
+                btn.setAttribute('data-action', 'hidden')
+                btn.innerText = 'View'
+              }
+              
+            })
+          })
+          {{!-- subTable.forEach((sub) => {
+            sub.addEventListener('DOMContentLoaded', (e) => {
+              console.log("loaded")
+            })
+          }) --}}
+
+          inputCheckAll.addEventListener('click', (e) => {
+            const id1 = inputCheckAll.getAttribute('data-id1')
+            const inputs = document.querySelectorAll(`#table-${id1} input`)
+            inputs.forEach(input => {
+              input.checked = inputCheckAll.checked
+              input.addEventListener('click', () => {
+                if (!input.checked) {
+                  inputCheckAll.checked = false
+                }
+              })
+            })
+          })
+        </script>
+    </tbody>
+  </table>
+  <div class="pagination d-flex justify-content-center">
+    {{#if (equal numberPages '0')}}
+    {{else}}
+      {{> component/layout/pagination currentPage=currentPage numberPages=numberPages}}
+    {{/if}}
+  </div>
+</nav>
+{{!-- Confirm delete --}}
+<div class="modal" id="confirm-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Submit your action!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you want to delete the order?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+        <button id="confirm-delete" type="button" class="btn btn-danger" >Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- edit form  --}}
+<section id="form-edit" style="display: none;" data-id-pd="">
+  <div class="mask d-flex align-items-center gradient-custom-3">
+    <div class="container">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Edit the information account</h2>
+
+              <form id="form-edit-account" action="?" method="post">
+                <div class="row">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="fullname">Full Name</label>
+                      <input type="text" id="fullname" class="form-control form-control-lg" placeholder=""/>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="email">Email</label>
+                      <input type="text" id="email" class="form-control form-control-lg" placeholder=""/ >
+                      <span id="message-err" class=""></span>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="phoneNumber">Phone Number</label>
+                      <input type="text" id="phoneNumber" class="form-control form-control-lg" placeholder=""/ >
+                      <span id="message-err" class=""></span>
+                    </div>
+                    <script>
+
+                      function getParentElement(element) {
+                        return element.parentElement;
+                      }
+
+                      const elements = ['email', 'phoneNumber']
+                      const regex = {
+                        email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                        phoneNumber: /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
+                      }
+                      const message= {
+                        email: 'The field be must the email',
+                        phoneNumber: 'The field be must the phone number',
+                      }
+                      elements.forEach((item) => {
+                        const element = document.getElementById(item)
+                        const message_error = element.parentElement.querySelector('#message-err')
+                        element.onblur = function() {
+                          const value = element.value
+                          let isMatch = true
+                          if(value != '') {
+                            isMatch = regex[item].test(value)
+                          }
+                          if(!isMatch) {
+                            message_error.innerText = 'The field is invalid'
+                            message_error.classList.add('invalid')
+                          } else {
+                            message_error.innerText = ''
+                            message_error.classList.remove('invalid')
+                          }
+                            
+                        }
+                      })
+                    </script>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="role">Role</label>
+                      <select id="role" class="form-control form-control-lg">
+                        <option value="">Select status product</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                      </select>
+                    </div>
+                </div>
+
+
+                <div class="d-flex justify-content-around">
+                  <button  type="button" data-mdb-button-init id="exit-btn"
+                    data-mdb-ripple-init class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" style="color: white !important">Exit</button>
+                  <button  type="button" data-mdb-button-init id="submit-btn"
+                    data-mdb-ripple-init class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Submit</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const exitBtn = document.getElementById('exit-btn')
+    const formEdit = document.getElementById('form-edit')
+    exitBtn.addEventListener('click', () => {
+      formEdit.style.display = 'none'
+    })
+
+  </script>
+  <script>
+    const btns = document.querySelectorAll('#edit')
+    const submitEditBtn = formEdit.querySelector('#submit-btn')
+    btns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-bs-id')
+      const url = `http://localhost:3000/admin/access-setting/${id}`
+      await axios.get(url)
+          .then(res => res.data)
+          .then(dt => {
+            formEdit.style.display = 'block'
+            const account = dt.account
+            formEdit.setAttribute('data-id-pd', account._id)
+            const elements = ['fullname', 'email', 'phoneNumber', 'role']
+            elements.forEach((element) => {
+              formEdit.querySelector(`#${element}`).setAttribute('placeholder', account[element] || '')
+            })
+          })
+    })
+    })
+    const mask = document.querySelector('.mask')
+    mask.onclick = () => {
+      const formEdit = document.getElementById('form-edit')
+      formEdit.style.display = 'none'
+    }
+
+    //
+    document.querySelector('.mask .card').onclick = (e) => {
+      e.stopPropagation()
+    }
+
+    //
+
+    submitEditBtn.addEventListener('click', async() => {
+      const form = document.getElementById('form-edit-account')
+      const elements = ['fullname', 'email', 'phoneNumber', 'role']
+      const option = {}
+      elements.forEach((element) => {
+        const input = formEdit.querySelector(`#${element}`)
+        if(input.getAttribute('placeholder') != input.value && input.value != '' && !input.value.includes('<script>')) {
+          option[element] = input.value
+        }
+      })
+      if(Object.keys(option).length != 0) {
+        let uri = ""
+        for(let key in option) {
+          if(uri != "") {
+            uri += "&"
+          }
+          uri += key +"="+ encodeURIComponent(option[key])
+        }
+        form.action = `http://localhost:3000/admin/access-setting/${formEdit.getAttribute('data-id-pd')}/edit/${uri}?_method=PATCH`
+        form.submit()
+      }
+    })
+  </script>
+</section>
+
+{{!-- FORM DELETE --}}
+
+
+<form id="form-confirm-delete" method="POST"></form>
+<form id="form-edit-account" method="POST"></form>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function()  {
+    var modal = document.getElementById('confirm-modal')
+    var btnSubmit = document.getElementById('submit-action')
+    var actionForm = document.getElementById('mass-action')
+    var form = document.getElementById('form-confirm-delete')
+    
+
+    modal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget
+      const tr = button.parentElement.parentElement
+      const id1 = tr.getAttribute('data-id1')
+      const id2 = tr.getAttribute('data-id2')
+      var btnDeleteCofirm = document.getElementById('confirm-delete');
+      btnDeleteCofirm.onclick = async function() {
+        const dtc = (await axios.delete(`http://localhost:3000/admin/pending/${id1}/${id2}/delete`)).data
+        if(dtc.type == 'success') {
+          tr.parentElement.removeChild(tr)
+          modal.classList.remove('show')
+          modal.style.display = 'none'
+          document.querySelector('.modal-backdrop').remove()
+        } else {
+          alert('Server Error! Please reload the website!')
+          window.href.reload()
+        }
+      }
+    })
+
+    //handle click button submit-action
+
+    btnSubmit.addEventListener('click', () => {
+      let arrInput = [...document.querySelectorAll('#check-one')]
+      arrInput = arrInput.filter(item => item.checked)
+      let uri = ''
+      arrInput.forEach((input) => {
+        const tr = input.parentElement.parentElement
+        if(uri != '') {
+          uri += '&'
+        }
+        uri += decodeURI(`${tr.getAttribute('data-id1')}=${tr.getAttribute('data-id2')}`)
+      })
+      if(uri != '') {
+        switch(actionForm.value) {
+          case '0':
+            break;
+          case '1':
+            form.action = 'http://localhost:3000/admin/pending/' + uri +'/comfirmList?_method=PATCH'
+            form.submit()
+            break;
+          case '2':
+            form.action = 'http://localhost:3000/admin/pending/' + uri +'/successList?_method=PATCH'
+            form.submit()
+            break;
+          case '3':
+            form.action = 'http://localhost:3000/admin/pending/' + uri +'/deleteList?_method=DELETE'
+            form.submit()
+            break;
+        }
+      }
+      
+    })
+  })
+</script>
+
+</div>

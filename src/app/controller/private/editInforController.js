@@ -38,21 +38,23 @@ class EditInforController {
     }
 
     async changeAvatar(req, res, next) {
-        const newAvatar = req.body.avatar
-        try {
-            await Account.findByIdAndUpdate(res.locals.id, {
-                avatar: newAvatar
+        const idUser = res.locals.id
+        const updateResult = req.file
+        const message = {}
+        if(updateResult != null) {
+            await Account.updateOne({
+                _id: idUser
+            }, {
+                avatar: updateResult.path
             })
-            res.status(200).json({
-                type: 'success',
-                message: 'Update avatar succes'
-            })
-        } catch(err) {
-            res.status(500).json({
-                type: 'Error',
-                message: 'Dont change your avatar!'
-            })
+            message.type = 'success'
+            message.message = 'Upload avatar success'
+            message.path = updateResult.path
+        } else {
+            message.type = 'error'
+            message.message = 'Upload avatar fail'
         }
+        res.json(message)
     }
 }
 

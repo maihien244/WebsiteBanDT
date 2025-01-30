@@ -7,10 +7,21 @@ module.exports = async (req, res, next) => {
             res.locals.id = decoded.id
             next()
         } catch(err) {
+            console.log('check user login middle')
             console.log(err)
-            res.redirect('/login')
+            // res.json({
+            //         type: 'warn',
+            //         message: 'failure access private page',
+            //         uri: 'http://localhost:3000/login'
+            //     })
+            // res.redirect('/login')
         }
     } else {
+        // res.json({
+        //             type: 'warn',
+        //             message: 'failure access private page',
+        //             uri: 'http://localhost:3000/login'
+        //         })
         res.redirect('/login')
     }
 }

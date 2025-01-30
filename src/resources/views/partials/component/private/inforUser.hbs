@@ -10,13 +10,19 @@
                     <a href="/" class="nav-link text-black" aria-current="page">Home</a>
                 </li>
                 <li class="p-2 nav-items link__get" id="user_infor" data-idElement="information-page">
-                    <a href="infor" class="nav-link text-black" aria-current="page">User Information</a>
+                    <a href="http://localhost:3000/private/infor" class="nav-link text-black" aria-current="page">User Information</a>
                 </li>
                 <li class="link__get p-2 nav-items">
-                    <a href="#" class="nav-link text-black" aria-current="page">Delivering</a>
+                    <a href="http://localhost:3000/private/wishlist" class="nav-link text-black" aria-current="page">WishList</a>
                 </li>
                 <li class="link__get p-2 nav-items">
-                    <a href="#" class="nav-link text-black" aria-current="page">Completed</a>
+                    <a href="http://localhost:3000/private/cart" class="nav-link text-black" aria-current="page">Cart</a>
+                </li>
+                <li class="link__get p-2 nav-items">
+                    <a href="http://localhost:3000/private/canceled" class="nav-link text-black" aria-current="page">Canceled</a>
+                </li>
+                <li class="link__get p-2 nav-items">
+                    <a href="http://localhost:3000/private/completed" class="nav-link text-black" aria-current="page">Completed</a>
                 </li>    
                 <li class="p-2 nav-items">
                     <a href="/logout" class="nav-link text-black" aria-current="page">Log Out</a>
@@ -27,8 +33,17 @@
             {{#if (equal layoutPage 'infor')}}
                 {{> component/private/layoutInfor/infor_layout configHeader=configHeader}}
             {{/if}}
-            {{#if (equal layoutPage 'products')}}
-                {{> component/private/layoutInfor/products_layout configHeader=configHeader}}
+            {{#if (equal layoutPage 'wishlist')}}
+                {{> component/private/layoutInfor/wishlist_layout configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'cart')}}
+                {{> component/private/layoutInfor/cart_layout configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'canceled')}}
+                {{> component/private/layoutInfor/canceled_layout configHeader=configHeader}}
+            {{/if}}
+            {{#if (equal layoutPage 'completed')}}
+                {{> component/private/layoutInfor/completed_layout configHeader=configHeader}}
             {{/if}}
         </div>
         <script>

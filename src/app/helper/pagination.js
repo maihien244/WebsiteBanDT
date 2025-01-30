@@ -2,7 +2,7 @@ module.exports = {
     compare: (a, b) => {
         return a > b
     },
-    prePage: (currentPage) => {
+    prePage: (currentPage, pageNumbers) => {
         if(currentPage > 1) {
             return `<li class="page-item"><a class="page-link" href="?page=${currentPage-1}">Previous</a></li>`
         } else {

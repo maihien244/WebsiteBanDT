@@ -18,6 +18,7 @@ class LoginController {
     async loginAccount(req, res, next) {
         // console.log(1)
         try {
+            // console.log(req.body)
             const text_input = req.body.text_input
             const password = req.body.password
 

@@ -22,33 +22,25 @@
                                             document.getElementById('btn-upload-file').addEventListener('click', () => {
                                                 inputFile.click()
                                             })
-                                            inputFile.addEventListener('change', () => {
+                                            inputFile.addEventListener('change', async  () => {
                                                 // console.log(1)
                                                 const fileSelected = inputFile.files[0]
-                                                const fileReader = new FileReader()
-                                                var img = new Image()
-                                                fileReader.onload = async (event) => {
-                                                    img.src = event.target.result
-                                                    const canvas = document.createElement('canvas')
-                                                    const ctx = canvas.getContext('2d')
-                                                    canvas.width = 140
-                                                    canvas.height = Math.floor((140/img.width)*img.height)
-                                                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-                                                    const srcImg = canvas.toDataURL('image/jpeg', 0.7)
-                                                    console.log(srcImg)
-                                                    // console.log(srcImg)
-                                                    document.querySelector('.user-avatar img').src = srcImg
-                                                    await axios.patch('http://localhost:3000/private/change-avatar', {
-                                                        avatar: srcImg
+                                                const formData = new FormData()
+                                                formData.append('image', fileSelected)
+                                                console.log(formData)
+                                                {{!-- document.querySelector('.user-avatar img').src = srcImg --}}
+                                                await axios.patch('http://localhost:3000/private/change-avatar', formData, {
+                                                    headers: {
+                                                        'Content-Type': 'multipart/form-data'
+                                                    }})
+                                                    .then(res => {
+                                                        const response = res.data
+                                                        if(response.type == 'success') {
+                                                            document.querySelector('.user-avatar img').src = response.path
+                                                        } else {
+                                                            alert(response.message)
+                                                        }
                                                     })
-
-
-                                                }
-                                                fileReader.onerror = () => {
-                                                    document.getElementById('msg-error-input-file').innerText = 'Upload Image Fail!'
-                                                    document.getElementById('msg-error-input-file').style.color = 'red'
-                                                }
-                                                fileReader.readAsDataURL(fileSelected)
                                             })
                                         </script>
                                 </div>

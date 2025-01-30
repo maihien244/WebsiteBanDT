@@ -47,7 +47,60 @@
             </ul>
         </div>
         <div class="col content-container p-5 d-flex justify-content-center">
-            
+            <div class="container col">
+                <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Bootstrap 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng với Kích thước Cột</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table td, table th {
+            text-align: center; /* Canh giữa nội dung trong bảng */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 10%;">Index</th> <!-- Kích thước bằng nhau cho Index -->
+                    <th style="width: 10%;">Select</th> <!-- Kích thước bằng nhau cho Select -->
+                    <th style="width: 60%;">ID User</th> <!-- Gấp 3 lần cột khác -->
+                    <th style="width: 10%;"></th> <!-- Kích thước bằng nhau cho Actions -->
+                </tr>
+            </thead>
+            <tbody>
+                {{#each pending}}
+            </tbody>
+        </table>
+    </div>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+    </div>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+            </div>
         </div>
         <script>
             const linkGets = document.querySelectorAll('.link__get')

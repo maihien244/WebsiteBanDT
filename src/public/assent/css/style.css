@@ -107,12 +107,12 @@ i {
   padding: 20px;
 }
 
-.card {
+.card__product {
   border-radius: 30px !important;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
-.card-body {
+.card-body__product {
   margin-left: 1.25rem;
   padding: 25px;
   margin-top: -15px;
@@ -156,6 +156,22 @@ h3 {
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.disabledLink {
+  color: white;
+  background-color: gray !important;
+  border-color: gray !important;
+  cursor: not-allowed !important;
+}
+
+.list-group {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 10000;
 }
 
 /*# sourceMappingURL=style.css.map */

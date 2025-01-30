@@ -1,0 +1,64 @@
+<div class="container col" id="products">
+  <div id="header-container">
+    <h3 id="title" class="text-center">Completed Order</h3>
+  </div>
+  <table class="table mt-5">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col" >
+          <input type="checkbox" id="select-all">
+        </th>
+        <th scope="col">
+          Name
+          {{{sortable _sort 'name'}}}
+        </th>
+        <th scope="col">
+          Address
+          {{{sortable _sort 'address'}}}
+        </th>
+        <th scope="col">
+          Phone Number
+          {{{sortable _sort 'phoneNumber'}}}
+        </th>
+        <th scope="col">
+          Purchase Date
+          {{{sortable _sort 'dateBuy'}}}
+        </th>
+        <th scope="col">
+          Quanlity
+          {{{sortable _sort 'quanlity'}}}
+        </th>
+        <th scope="col">
+          Total Amount
+          {{{sortable _sort 'price'}}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each order}}
+            <tr>
+                <td scope="row">{{sum @index 1}}</td>
+                <td>
+                  <input type="checkbox" id="checked-input" data-id="{{this.idCart}}">
+                </td>
+                <td>{{this.name}}</td>
+                <td>{{this.address}}</td>
+                <td>{{this.phoneNumber}}</td>
+                <td>{{this.dateCompleted}}</td>
+                <td>{{this.quanlity}}</td>
+                <td>{{this.price}}$</td>
+            </tr>
+      {{else}}
+        <td colspan="8" class="text-center">
+           No orders have been completed yet.
+        </td>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="pagination d-flex justify-content-center">
+    {{> component/layout/pagination currentPage=currentPage numberPages=numberPages}}
+  </div>
+</nav>
+
+</div>

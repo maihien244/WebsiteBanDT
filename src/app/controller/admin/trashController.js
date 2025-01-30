@@ -36,7 +36,7 @@ class TrashController {
         products = toMultiObjectLiteral(await Product.findDeleted({}))
         let tmp = []
         for(let i = (page_number - 1)*PAGE_SIZE; i < page_number*PAGE_SIZE; ++i) {
-            if(products[i]?.deleted) {
+            if(!!products[i] && products[i]?.deleted) {
                 tmp.push(products[i])
             }
         }

@@ -1,5 +1,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-<div class="super_container border-bottom">
+<div class="super_container border-bottom" style=" overflow: visible;">
 	
 	<!-- Header -->
 	
@@ -28,9 +28,6 @@
 											</a>
 											<ul>
 												<li><a href="/private/infor">Personal Information</a></li>
-												{{#if (checkRoleAccount configHeader.user.role)}}
-													<li><a href="/private/admin/create">Create product</a></li>
-												{{/if}}
 												<li><a href="/logout">Log Out</a></li>
 											</ul>
 										</li>
@@ -49,7 +46,7 @@
 		<!-- Header Main -->
 
 		<div class="header_main">
-			<div class="container">
+			<div class="container" >
 				<div class="row">
 
 					<!-- Logo -->
@@ -60,19 +57,84 @@
 					</div>
 
 					<!-- Search -->
-					<div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right">
+					<div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right" >
 						<div class="header_search">
 							<div class="header_search_content">
-								<div class="header_search_form_container">
+								<div class="header_search_form_container" style="position: relative !important;">
 									<form action="#" class="header_search_form clearfix">
-										<input type="search" required="required" class="header_search_input" placeholder="Search for products...">
+										<input type="search" required="required" id="search-input" class="header_search_input" placeholder="Search for products...">
 										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918770/search.png" alt=""></button>
 									</form>
+									<ul id="searchResults" class="list-group mt-2 d-none" >
+										{{!-- <li class="list-group-item list-group-item-action">
+											<div class="row h-100 text-center">
+												<div class="col-3" style="object-fit: cover;">
+													<img height="40" src="data:image/jpeg;base64,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" alt="">
+												</div>
+												<div class="col-9">
+													<div class="row">
+														<div class="col-6 text-left">
+															Product name
+														</div>
+														<div class="col-6 text-center">
+															<p>Price</p>
+														</div>
+													</div>
+												</div>
+											</div>
+										</li> --}}
+									</ul>
 								</div>
 							</div>
 						</div>
+						
 					</div>
+					<script>
+						const input_search = document.getElementById('search-input')
+						const searchResults = document.getElementById('searchResults')
+						input_search.addEventListener('input', async function(event) {
+							console.log(input_search.value)
+							const data = (await axios.post('http://localhost:3000/search', {
+								textSearch: input_search.value
+							})).data
+							{{!-- console.log(data) --}}
 
+							if(data.type == 'success') {
+								const products = data.data
+								if(products.length > 0) {
+									searchResults.innerHTML = ''
+									products.forEach(product => {
+										const li = document.createElement('li')
+										li.classList.add('list-group-item', 'list-group-item-action')
+										li.innerHTML = `
+											<li class="list-group-item list-group-item-action">
+											<div class="row h-100 text-center">
+												<div class="col-3" style="object-fit: cover;">
+													<img height="40" src="${product.img}" alt="">
+												</div>
+												<div class="col-9">
+													<div class="row">
+														<div class="col-6 text-left">
+															<h5>${product.name}</h5>
+														</div>
+														<div class="col-6 text-center">
+															<p>${product.price}$</p>
+														</div>
+													</div>
+												</div>
+											</div>
+										</li>`
+										searchResults.appendChild(li)
+									})
+									searchResults.classList.remove('d-none')
+								} else {
+									searchResults.classList.add('d-none')
+								}
+							} else {
+								alert('Don\'t have any product match with your search')
+							}
+						})
+					</script>
 					<!-- Wishlist -->
 					{{#if configHeader.userLogin}}
 						<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
@@ -80,8 +142,8 @@
 								<div class="wishlist d-flex flex-row align-items-center justify-content-end">
 									<div class="wishlist_icon"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918681/heart.png" alt=""></div>
 									<div class="wishlist_content">
-										<div class="wishlist_text"><a href="#">Wishlist</a></div>
-										<div class="wishlist_count">10</div>
+										<div class="wishlist_text"><a href="http://localhost:3000/private/wishlist">Wishlist</a></div>
+										<div class="wishlist_count">{{configHeader.user.wishlist_count}}</div>
 									</div>
 								</div>
 
@@ -90,11 +152,11 @@
 									<div class="cart_container d-flex flex-row align-items-center justify-content-end">
 										<div class="cart_icon">
 											<img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1560918704/cart.png" alt="">
-											<div class="cart_count"><span>3</span></div>
+											<div class="cart_count"><span>{{configHeader.user.cart_count}}</span></div>
 										</div>
 										<div class="cart_content">
-											<div class="cart_text"><a href="#">Cart</a></div>
-											<div class="cart_price">$185</div>
+											<div class="cart_text"><a href="http://localhost:3000/private/cart">Cart</a></div>
+											<div class="cart_price">${{configHeader.user.cart_price}}</div>
 										</div>
 									</div>
 								</div>
